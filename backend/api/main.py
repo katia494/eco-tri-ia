@@ -1,8 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.base import BaseHTTPMiddleware
 from backend.api.routes import router
+from backend.api.routes_stats import router_stats
 from backend.api.database import engine, Base
 from backend.api.logger import logger
+from backend.api.middleware import log_requests
 from backend.api.exceptions import (
     ImageTooLargeError,
     InvalidImageError,
@@ -21,6 +24,9 @@ app = FastAPI(
     version="1.0.0"
 )
 
+# Middleware de logging
+app.add_middleware(BaseHTTPMiddleware, dispatch=log_requests)
+
 # Configuration CORS pour le frontend React
 app.add_middleware(
     CORSMiddleware,
@@ -37,6 +43,7 @@ app.add_exception_handler(ModelNotFoundError, model_not_found_handler)
 
 # Inclusion des routes
 app.include_router(router)
+app.include_router(router_stats)
 
 @app.on_event("startup")
 async def startup_event():
