@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de bord Eco-Tri</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ecoGreen: '#16a34a', // Vert nature
+                        ecoBrown: '#854d0e', // Marron terre/carton
+                        ecoLight: '#f5f5f4', // Blanc/Gris très clair
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-ecoLight text-gray-800 font-sans h-screen flex overflow-hidden">
+
+    <!-- BARRE LATÉRALE (Sidebar PC) -->
+    <aside class="w-64 bg-white border-r border-gray-200 flex flex-col justify-between shrink-0">
+        <div>
+            <!-- Logo -->
+            <div class="p-6 flex items-center space-x-3">
+                <div class="bg-ecoGreen p-2 rounded-lg text-white">
+                    <i data-lucide="leaf" class="w-6 h-6"></i>
+                </div>
+                <h1 class="text-2xl font-bold text-gray-800 tracking-tight">Eco-Tri</h1>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="px-4 space-y-1">
+                <!-- Lien Scanner (Désactivé) -->
+                <a href="#" class="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition-colors">
+                    <i data-lucide="scan-line" class="w-5 h-5"></i>
+                    <span>Scanner (Live)</span>
+                </a>
+                <!-- Lien Tableau de bord (Actif) -->
+                <a href="#" class="flex items-center space-x-3 px-4 py-3 bg-green-50 text-ecoGreen rounded-xl font-medium">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                    <span>Tableau de bord</span>
+                </a>
+                <a href="Le game.html" class="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition-colors">
+                    <i data-lucide="trophy" class="w-5 h-5"></i>
+                    <span>Classement</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition-colors">
+                    <i data-lucide="book-open" class="w-5 h-5"></i>
+                    <span>Bonnes Pratiques</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- Bas de la barre latérale -->
+        <div class="p-4 space-y-2">
+            <!-- Soutien projet étudiant -->
+            <button class="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-amber-50 text-ecoBrown rounded-lg text-sm font-medium hover:bg-amber-100 transition">
+                <i data-lucide="coffee" class="w-4 h-4"></i>
+                <span>Soutenir le projet</span>
+            </button>
+            <!-- Profil rapide -->
+            <div class="flex items-center space-x-3 px-4 py-3 bg-gray-50 rounded-xl border border-gray-100 mt-2 cursor-pointer hover:bg-gray-100">
+                <div class="w-10 h-10 bg-ecoBrown rounded-full flex items-center justify-center text-white font-bold">
+                    A
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-gray-900 truncate">katia</p>
+                    <p class="text-xs text-gray-500 truncate">Profil & Réglages</p>
+                </div>
+                <i data-lucide="settings" class="w-4 h-4 text-gray-400"></i>
+            </div>
+        </div>
+    </aside>
+
+    <!-- CONTENU PRINCIPAL -->
+    <main class="flex-1 flex flex-col h-screen overflow-y-auto">
+        
+        <!-- En-tête (Header) -->
+        <header class="bg-white px-8 py-5 border-b border-gray-200 flex justify-between items-center sticky top-0 z-10">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-800">Voici votre impact, katia 🌍</h2>
+                <p class="text-sm text-gray-500 mt-1 flex items-center">
+                    <i data-lucide="map-pin" class="w-4 h-4 mr-1 text-ecoBrown"></i>
+                    Localisation active : <strong class="ml-1 text-gray-700">Gennevilliers, Quartier Village</strong>
+                </p>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <div class="text-right">
+                    <p class="text-xs text-gray-500 uppercase font-bold tracking-wider">Niveau Actuel</p>
+                    <p class="text-ecoGreen font-bold flex items-center justify-end">
+                        <i data-lucide="sprout" class="w-4 h-4 mr-1"></i> Apprenti Recycleur
+                    </p>
+                </div>
+                <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center border-2 border-yellow-400 shadow-sm">
+                    <span class="font-bold text-yellow-600">450</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Grille de contenu principale -->
+        <div class="p-8 max-w-7xl mx-auto w-full space-y-8">
+            
+            <!-- SECTION 1 : Cartes de Statistiques (KPIs) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- KPI 1 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center space-x-4">
+                    <div class="p-4 bg-blue-50 text-blue-600 rounded-xl">
+                        <i data-lucide="package" class="w-7 h-7"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500 font-medium">Déchets triés</p>
+                        <p class="text-2xl font-bold text-gray-800">142</p>
+                    </div>
+                </div>
+                
+                <!-- KPI 2 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center space-x-4">
+                    <div class="p-4 bg-yellow-50 text-yellow-600 rounded-xl">
+                        <i data-lucide="star" class="w-7 h-7"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500 font-medium">Score Total</p>
+                        <p class="text-2xl font-bold text-gray-800">450 <span class="text-sm font-normal text-gray-500">pts</span></p>
+                    </div>
+                </div>
+
+                <!-- KPI 3 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center space-x-4">
+                    <div class="p-4 bg-ecoGreen/10 text-ecoGreen rounded-xl">
+                        <i data-lucide="cloud-snow" class="w-7 h-7"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500 font-medium">CO2 Évité (est.)</p>
+                        <p class="text-2xl font-bold text-gray-800">1.2 <span class="text-sm font-normal text-gray-500">kg</span></p>
+                    </div>
+                </div>
+
+                <!-- KPI 4 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center space-x-4">
+                    <div class="p-4 bg-orange-50 text-orange-500 rounded-xl">
+                        <i data-lucide="flame" class="w-7 h-7"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500 font-medium">Série en cours</p>
+                        <p class="text-2xl font-bold text-gray-800">5 <span class="text-sm font-normal text-gray-500">jours</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2 : Graphique et Historique -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <!-- Colonne Graphique d'activité (Prend 2/3 de la largeur) -->
+                <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-bold text-gray-800">Activité de la semaine</h3>
+                        <select class="bg-gray-50 border border-gray-200 text-gray-700 text-sm rounded-lg px-3 py-1.5 focus:ring-ecoGreen focus:border-ecoGreen outline-none">
+                            <option>Cette semaine</option>
+                            <option>Ce mois-ci</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Graphique en barres simulé avec CSS Flexbox -->
+                    <div class="flex-1 flex items-end justify-between space-x-2 pt-10 pb-2 border-b border-gray-100">
+                        <div class="w-full flex flex-col items-center group">
+                            <div class="w-10 bg-green-100 rounded-t-md h-12 group-hover:bg-green-200 transition"></div>
+                            <span class="text-xs text-gray-400 mt-2">Lun</span>
+                        </div>
+                        <div class="w-full flex flex-col items-center group">
+                            <div class="w-10 bg-green-100 rounded-t-md h-24 group-hover:bg-green-200 transition"></div>
+                            <span class="text-xs text-gray-400 mt-2">Mar</span>
+                        </div>
+                        <div class="w-full flex flex-col items-center group">
+                            <div class="w-10 bg-ecoGreen rounded-t-md h-40 shadow-sm relative">
+                                <!-- Tooltip au survol -->
+                                <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition">15 objets</div>
+                            </div>
+                            <span class="text-xs font-bold text-gray-800 mt-2">Mer</span>
+                        </div>
+                        <div class="w-full flex flex-col items-center group">
+                            <div class="w-10 bg-green-100 rounded-t-md h-16 group-hover:bg-green-200 transition"></div>
+                            <span class="text-xs text-gray-400 mt-2">Jeu</span>
+                        </div>
+                        <div class="w-full flex flex-col items-center group">
+                            <div class="w-10 bg-gray-100 rounded-t-md h-4 group-hover:bg-gray-200 transition"></div>
+                            <span class="text-xs text-gray-400 mt-2">Ven</span>
+                        </div>
+                        <div class="w-full flex flex-col items-center group">
+                            <div class="w-10 bg-gray-100 rounded-t-md h-0 group-hover:bg-gray-200 transition"></div>
+                            <span class="text-xs text-gray-400 mt-2">Sam</span>
+                        </div>
+                        <div class="w-full flex flex-col items-center group">
+                            <div class="w-10 bg-gray-100 rounded-t-md h-0 group-hover:bg-gray-200 transition"></div>
+                            <span class="text-xs text-gray-400 mt-2">Dim</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Colonne Historique récent -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-bold text-gray-800">Derniers scans</h3>
+                        <a href="#" class="text-ecoGreen text-sm font-medium hover:underline">Tout voir</a>
+                    </div>
+
+                    <div class="space-y-4 flex-1">
+                        <!-- Item Historique 1 -->
+                        <div class="flex items-start space-x-3">
+                            <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600 shrink-0">
+                                <i data-lucide="bottle-water" class="w-5 h-5"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-bold text-gray-800 truncate">Bouteille en plastique</p>
+                                <p class="text-xs text-gray-500">Bac Jaune • Il y a 2 heures</p>
+                            </div>
+                            <span class="text-xs font-bold text-ecoGreen bg-green-50 px-2 py-1 rounded-full">+10</span>
+                        </div>
+
+                        <!-- Item Historique 2 -->
+                        <div class="flex items-start space-x-3">
+                            <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-600 shrink-0">
+                                <i data-lucide="battery" class="w-5 h-5"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-bold text-gray-800 truncate">Pile AA</p>
+                                <p class="text-xs text-gray-500">Point de collecte • Hier</p>
+                            </div>
+                            <span class="text-xs font-bold text-ecoGreen bg-green-50 px-2 py-1 rounded-full">+25</span>
+                        </div>
+
+                        <!-- Item Historique 3 -->
+                        <div class="flex items-start space-x-3">
+                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 shrink-0">
+                                <i data-lucide="file-text" class="w-5 h-5"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-bold text-gray-800 truncate">Carton d'emballage</p>
+                                <p class="text-xs text-gray-500">Bac Jaune • Hier</p>
+                            </div>
+                            <span class="text-xs font-bold text-ecoGreen bg-green-50 px-2 py-1 rounded-full">+10</span>
+                        </div>
+                    </div>
+                    
+                    <button class="w-full mt-4 py-2 bg-ecoGreen text-white rounded-lg text-sm font-medium hover:bg-green-700 transition flex items-center justify-center">
+                        <i data-lucide="scan-line" class="w-4 h-4 mr-2"></i> Lancer un nouveau scan
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- SECTION 3 : Progression & Gamification -->
+            <div class="bg-ecoBrown text-white rounded-2xl shadow-sm p-6 relative overflow-hidden">
+                <!-- Décoration -->
+                <i data-lucide="target" class="absolute -right-10 -bottom-10 w-48 h-48 opacity-10"></i>
+                
+                <div class="relative z-10 md:flex items-center justify-between">
+                    <div class="mb-4 md:mb-0">
+                        <h3 class="text-xl font-bold mb-1 flex items-center">
+                            Objectif : Trieur Engagé <i data-lucide="medal" class="w-5 h-5 ml-2 text-yellow-400"></i>
+                        </h3>
+                        <p class="text-sm text-amber-50">Plus que 50 points pour passer au niveau supérieur et débloquer un nouveau badge.</p>
+                    </div>
+                    
+                    <div class="w-full md:w-1/2">
+                        <div class="flex justify-between text-sm font-medium mb-2">
+                            <span>Apprenti Recycleur (450)</span>
+                            <span>Trieur Engagé (500)</span>
+                        </div>
+                        <div class="w-full bg-white/20 rounded-full h-3">
+                            <div class="bg-yellow-400 h-3 rounded-full" style="width: 90%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Initialisation des icônes -->
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

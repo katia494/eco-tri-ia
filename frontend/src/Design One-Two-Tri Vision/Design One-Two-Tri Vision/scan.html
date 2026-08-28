@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maquette Eco-Tri</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ecoGreen: '#16a34a', // Vert nature
+                        ecoBrown: '#854d0e', // Marron terre/carton
+                        ecoLight: '#f5f5f4', // Blanc/Gris très clair
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Animation pour le viseur du scanner */
+        @keyframes pulse-border {
+            0% {
+                border-color: rgba(22, 163, 74, 0.4);
+            }
+
+            50% {
+                border-color: rgba(22, 163, 74, 1);
+            }
+
+            100% {
+                border-color: rgba(22, 163, 74, 0.4);
+            }
+        }
+
+        .scanner-focus {
+            animation: pulse-border 2s infinite;
+        }
+    </style>
+</head>
+
+<body class="bg-ecoLight text-gray-800 font-sans h-screen flex overflow-hidden">
+
+    <!-- BARRE LATÉRALE (Sidebar PC) -->
+    <aside class="w-64 bg-white border-r border-gray-200 flex flex-col justify-between">
+        <div>
+            <!-- Logo -->
+            <div class="p-6 flex items-center space-x-3">
+                <div class="bg-ecoGreen p-2 rounded-lg text-white">
+                    <i data-lucide="leaf" class="w-6 h-6"></i>
+                </div>
+                <h1 class="text-2xl font-bold text-gray-800 tracking-tight">Eco-Tri</h1>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="px-4 space-y-1">
+                <a href="#"
+                    class="flex items-center space-x-3 px-4 py-3 bg-green-50 text-ecoGreen rounded-xl font-medium">
+                    <i data-lucide="scan-line" class="w-5 h-5"></i>
+                    <span>Scanner (Live)</span>
+                </a>
+                <a href="dashboard.html"
+                    class="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition-colors">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                    <span>Tableau de bord</span>
+                </a>
+                <a href="#"
+                    class="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition-colors">
+                    <i data-lucide="trophy" class="w-5 h-5"></i>
+                    <span>Classement</span>
+                </a>
+                <a href="#"
+                    class="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition-colors">
+                    <i data-lucide="book-open" class="w-5 h-5"></i>
+                    <span>Bonnes Pratiques</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- Bas de la barre latérale -->
+        <div class="p-4 space-y-2">
+            <!-- Soutien projet étudiant -->
+            <button
+                class="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-amber-50 text-ecoBrown rounded-lg text-sm font-medium hover:bg-amber-100 transition">
+                <i data-lucide="coffee" class="w-4 h-4"></i>
+                <span>Soutenir le projet</span>
+            </button>
+            <!-- Profil rapide -->
+            <div
+                class="flex items-center space-x-3 px-4 py-3 bg-gray-50 rounded-xl border border-gray-100 mt-2 cursor-pointer hover:bg-gray-100">
+                <div class="w-10 h-10 bg-ecoBrown rounded-full flex items-center justify-center text-white font-bold">
+                    A
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-gray-900 truncate">katia</p>
+                    <p class="text-xs text-gray-500 truncate">Profil & Réglages</p>
+                </div>
+                <i data-lucide="settings" class="w-4 h-4 text-gray-400"></i>
+            </div>
+        </div>
+    </aside>
+
+    <!-- CONTENU PRINCIPAL -->
+    <main class="flex-1 flex flex-col h-screen overflow-y-auto">
+
+        <!-- En-tête (Header) -->
+        <header class="bg-white px-8 py-5 border-b border-gray-200 flex justify-between items-center sticky top-0 z-10">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-800">Prêt à trier, katia ? ♻️</h2>
+                <p class="text-sm text-gray-500 mt-1 flex items-center">
+                    <i data-lucide="map-pin" class="w-4 h-4 mr-1 text-ecoBrown"></i>
+                    Localisation active : <strong class="ml-1 text-gray-700">Gennevilliers, Quartier Village</strong>
+                </p>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <div class="text-right">
+                    <p class="text-xs text-gray-500 uppercase font-bold tracking-wider">Niveau Actuel</p>
+                    <p class="text-ecoGreen font-bold flex items-center justify-end">
+                        <i data-lucide="sprout" class="w-4 h-4 mr-1"></i> Apprenti Recycleur
+                    </p>
+                </div>
+                <div
+                    class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center border-2 border-yellow-400">
+                    <span class="font-bold text-yellow-600">450</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Grille de contenu -->
+        <div class="p-8 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+            <!-- COLONNE GAUCHE & CENTRE : Le Scanner (Prend 2 colonnes) -->
+            <div class="col-span-1 lg:grid-cols-2 lg:col-span-2 space-y-6">
+
+                <!-- Zone de la Webcam -->
+                <div
+                    class="bg-black rounded-2xl overflow-hidden relative aspect-video shadow-lg border-4 border-gray-800">
+                    <!-- Image simulant la webcam (Bouteille) -->
+                    <img src="https://images.unsplash.com/photo-1528323273322-d81458248d40?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+                        alt="Webcam feed" class="w-full h-full object-cover opacity-80">
+
+                    <!-- Viseur / Carré de focus -->
+                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <div class="w-64 h-80 border-2 border-dashed scanner-focus rounded-xl relative">
+                            <!-- Coins du viseur -->
+                            <div
+                                class="absolute top-0 left-0 w-4 h-4 border-t-4 border-l-4 border-ecoGreen rounded-tl-lg">
+                            </div>
+                            <div
+                                class="absolute top-0 right-0 w-4 h-4 border-t-4 border-r-4 border-ecoGreen rounded-tr-lg">
+                            </div>
+                            <div
+                                class="absolute bottom-0 left-0 w-4 h-4 border-b-4 border-l-4 border-ecoGreen rounded-bl-lg">
+                            </div>
+                            <div
+                                class="absolute bottom-0 right-0 w-4 h-4 border-b-4 border-r-4 border-ecoGreen rounded-br-lg">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- HUD IA (Overlay Résultat) -->
+                    <div
+                        class="absolute bottom-6 left-1/2 transform -translate-x-1/2 w-11/12 max-w-md bg-white/95 backdrop-blur-sm p-4 rounded-xl shadow-2xl border border-gray-200">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <p class="text-xs font-bold text-gray-500 uppercase">Détection IA : 62%</p>
+                                <h3 class="text-xl font-black text-gray-800 mt-1">Bouteille en Plastique</h3>
+                                <p class="text-sm text-gray-600 mt-1">Consigne : Vider sans rincer, laisser le bouchon.
+                                </p>
+                            </div>
+                            <!-- Bouton Bac -->
+                            <div
+                                class="bg-yellow-400 text-yellow-900 px-4 py-2 rounded-lg font-bold shadow-sm border border-yellow-500 flex flex-col items-center">
+                                <i data-lucide="trash-2" class="w-6 h-6 mb-1"></i>
+                                BAC JAUNE
+                            </div>
+                        </div>
+
+                        <!-- Gestion du doute (Proba < Seuil) -->
+                        <div class="mt-4 pt-3 border-t border-gray-200">
+                            <p class="text-xs text-gray-500 mb-2 font-medium">L'IA hésite un peu. Confirmez-vous cet
+                                objet ?</p>
+                            <div class="flex space-x-2">
+                                <button
+                                    class="flex-1 bg-ecoGreen text-white py-2 rounded-lg font-medium text-sm hover:bg-green-700 transition shadow-sm">
+                                    Oui, c'est ça ! (+5 pts)
+                                </button>
+                                <button
+                                    class="flex-1 bg-gray-200 text-gray-700 py-2 rounded-lg font-medium text-sm hover:bg-gray-300 transition shadow-sm">
+                                    Non, corriger
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Petit bloc Cartes (Statistiques) -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex items-center space-x-4">
+                        <div class="p-3 bg-blue-50 text-blue-600 rounded-xl">
+                            <i data-lucide="package" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 font-medium">Déchets triés</p>
+                            <p class="text-2xl font-bold text-gray-800">142</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex items-center space-x-4">
+                        <div class="p-3 bg-ecoGreen/10 text-ecoGreen rounded-xl">
+                            <i data-lucide="cloud-snow" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 font-medium">CO2 Évité (est.)</p>
+                            <p class="text-2xl font-bold text-gray-800">1.2 kg</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COLONNE DROITE : Gamification & Infos -->
+            <div class="space-y-6">
+
+                <!-- Bonne pratique du jour -->
+                <div class="bg-ecoBrown text-white p-6 rounded-2xl shadow-md relative overflow-hidden">
+                    <!-- Décoration fond -->
+                    <i data-lucide="lightbulb" class="absolute -right-4 -bottom-4 w-32 h-32 opacity-10"></i>
+
+                    <h3 class="text-lg font-bold mb-2 flex items-center">
+                        <i data-lucide="sparkles" class="w-5 h-5 mr-2 text-yellow-400"></i> Le Saviez-vous ?
+                    </h3>
+                    <p class="text-sm text-amber-50 leading-relaxed">
+                        Inutile de laver vos boîtes de conserve avant de les jeter ! Il suffit de bien les vider. Les
+                        laver gaspille de l'eau potable inutilement.
+                    </p>
+                </div>
+
+                <!-- Leaderboard Mini -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                    <h3 class="text-gray-800 font-bold mb-4 flex items-center justify-between">
+                        <span>Top Gennevilliers</span>
+                        <a href="#" class="text-ecoGreen text-sm font-medium hover:underline">Voir tout</a>
+                    </h3>
+
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-2 rounded-lg bg-gray-50">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-yellow-500 font-bold w-4">1</span>
+                                <div
+                                    class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-xs font-bold text-blue-800">
+                                    S</div>
+                                <span class="text-sm font-medium text-gray-700">Sarah M.</span>
+                            </div>
+                            <span class="text-sm font-bold text-gray-900">1250 pts</span>
+                        </div>
+
+                        <!-- L'utilisateur (Highlight) -->
+                        <div
+                            class="flex items-center justify-between p-2 rounded-lg border border-ecoGreen bg-green-50">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-ecoGreen font-bold w-4">7</span>
+                                <div
+                                    class="w-8 h-8 rounded-full bg-ecoBrown flex items-center justify-center text-xs font-bold text-white">
+                                    A</div>
+                                <span class="text-sm font-bold text-ecoGreen">katia (Toi)</span>
+                            </div>
+                            <span class="text-sm font-bold text-ecoGreen">450 pts</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simulation Déchet Complexe (Points de collecte) -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                    <h3 class="text-gray-800 font-bold mb-3 flex items-center text-sm">
+                        <i data-lucide="battery-warning" class="w-4 h-4 mr-2 text-red-500"></i>
+                        Si vous scannez une pile :
+                    </h3>
+                    <p class="text-xs text-gray-500 mb-3">Points de collecte près de votre position actuelle :</p>
+
+                    <ul class="space-y-2">
+                        <li class="flex items-start space-x-3 text-sm">
+                            <i data-lucide="store" class="w-4 h-4 text-gray-400 mt-0.5"></i>
+                            <div>
+                                <p class="font-medium text-gray-800">Carrefour City</p>
+                                <p class="text-xs text-gray-500">À 250m • Borne à l'entrée</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start space-x-3 text-sm">
+                            <i data-lucide="building" class="w-4 h-4 text-gray-400 mt-0.5"></i>
+                            <div>
+                                <p class="font-medium text-gray-800">Mairie de Gennevilliers</p>
+                                <p class="text-xs text-gray-500">À 400m • Hall principal</p>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <button
+                        class="w-full mt-4 py-2 border border-gray-200 rounded-lg text-sm text-gray-600 font-medium hover:bg-gray-50 flex items-center justify-center transition">
+                        <i data-lucide="map" class="w-4 h-4 mr-2"></i> Ouvrir la carte
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Initialisation des icônes -->
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

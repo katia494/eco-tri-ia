@@ -216,3 +216,8 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Frontend - dossiers à ignorer
+frontend/node_modules/
+frontend/dist/
+frontend/.env.local

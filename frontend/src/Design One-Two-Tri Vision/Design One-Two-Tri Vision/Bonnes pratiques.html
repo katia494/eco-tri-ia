@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bonnes Pratiques - Eco-Tri</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ecoGreen: '#16a34a', // Vert nature
+                        ecoBrown: '#854d0e', // Marron terre/carton
+                        ecoLight: '#f5f5f4', // Blanc/Gris très clair
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-ecoLight text-gray-800 font-sans h-screen flex overflow-hidden">
+
+    <!-- BARRE LATÉRALE (Sidebar PC) -->
+    <aside class="w-64 bg-white border-r border-gray-200 flex flex-col justify-between shrink-0">
+        <div>
+            <!-- Logo -->
+            <div class="p-6 flex items-center space-x-3">
+                <div class="bg-ecoGreen p-2 rounded-lg text-white">
+                    <i data-lucide="leaf" class="w-6 h-6"></i>
+                </div>
+                <h1 class="text-2xl font-bold text-gray-800 tracking-tight">Eco-Tri</h1>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="px-4 space-y-1">
+                <a href="#" class="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition-colors">
+                    <i data-lucide="scan-line" class="w-5 h-5"></i>
+                    <span>Scanner (Live)</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition-colors">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                    <span>Tableau de bord</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition-colors">
+                    <i data-lucide="trophy" class="w-5 h-5"></i>
+                    <span>Classement</span>
+                </a>
+                <!-- Lien Bonnes Pratiques (Actif) -->
+                <a href="#" class="flex items-center space-x-3 px-4 py-3 bg-green-50 text-ecoGreen rounded-xl font-medium">
+                    <i data-lucide="book-open" class="w-5 h-5"></i>
+                    <span>Bonnes Pratiques</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- Bas de la barre latérale -->
+        <div class="p-4 space-y-2">
+            <button class="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-amber-50 text-ecoBrown rounded-lg text-sm font-medium hover:bg-amber-100 transition">
+                <i data-lucide="coffee" class="w-4 h-4"></i>
+                <span>Soutenir le projet</span>
+            </button>
+            <div class="flex items-center space-x-3 px-4 py-3 bg-gray-50 rounded-xl border border-gray-100 mt-2 cursor-pointer hover:bg-gray-100">
+                <div class="w-10 h-10 bg-ecoBrown rounded-full flex items-center justify-center text-white font-bold">A</div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-gray-900 truncate">katia</p>
+                    <p class="text-xs text-gray-500 truncate">Profil & Réglages</p>
+                </div>
+                <i data-lucide="settings" class="w-4 h-4 text-gray-400"></i>
+            </div>
+        </div>
+    </aside>
+
+    <!-- CONTENU PRINCIPAL -->
+    <main class="flex-1 flex flex-col h-screen overflow-y-auto">
+        
+        <!-- En-tête -->
+        <header class="bg-white px-8 py-5 border-b border-gray-200 flex justify-between items-center sticky top-0 z-10">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-800">Le Guide du Bon Trieur 📖</h2>
+                <p class="text-sm text-gray-500 mt-1">Apprenez les bons gestes pour un recyclage parfait.</p>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <div class="text-right">
+                    <p class="text-xs text-gray-500 uppercase font-bold tracking-wider">Niveau Actuel</p>
+                    <p class="text-ecoGreen font-bold flex items-center justify-end">
+                        <i data-lucide="sprout" class="w-4 h-4 mr-1"></i> Apprenti Recycleur
+                    </p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Contenu de la page -->
+        <div class="p-8 max-w-6xl mx-auto w-full space-y-8">
+
+            <!-- SECTION 1 : L'astuce mise en avant -->
+            <div class="bg-ecoGreen text-white rounded-2xl shadow-sm p-8 relative overflow-hidden flex items-center">
+                <i data-lucide="lightbulb" class="absolute -right-10 -bottom-10 w-64 h-64 text-green-700 opacity-20"></i>
+                <div class="relative z-10 md:w-2/3">
+                    <span class="inline-block px-3 py-1 bg-white text-ecoGreen text-xs font-bold rounded-full mb-4 uppercase tracking-wider">Astuce de la semaine</span>
+                    <h3 class="text-2xl font-bold mb-3">Faut-il laver ses emballages ?</h3>
+                    <p class="text-green-50 text-lg leading-relaxed mb-4">
+                        <strong>Non !</strong> C'est une erreur très courante. Il suffit de bien les vider. Laver vos boîtes de conserve ou vos pots de yaourt gaspille de l'eau potable inutilement. Les centres de tri s'occupent du nettoyage !
+                    </p>
+                </div>
+                <div class="hidden md:flex relative z-10 w-1/3 justify-center">
+                    <div class="w-32 h-32 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border-4 border-white/30">
+                        <i data-lucide="droplets" class="w-16 h-16 text-white"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2 : Guide par matière (Grille) -->
+            <div>
+                <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                    <i data-lucide="layers" class="w-6 h-6 mr-2 text-ecoBrown"></i> Les règles par type de déchet
+                </h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <!-- Carte Plastique & Métal -->
+                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition">
+                        <div class="bg-yellow-100 p-4 border-b border-yellow-200 flex items-center space-x-3">
+                            <div class="p-2 bg-yellow-400 text-yellow-900 rounded-lg">
+                                <i data-lucide="package" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900">Plastiques & Métaux</h4>
+                                <p class="text-xs text-yellow-800 font-medium">Bac Jaune</p>
+                            </div>
+                        </div>
+                        <div class="p-5 space-y-3">
+                            <div class="flex items-start space-x-3">
+                                <i data-lucide="check-circle-2" class="w-5 h-5 text-ecoGreen shrink-0 mt-0.5"></i>
+                                <p class="text-sm text-gray-600"><strong>Oui :</strong> Bouteilles, flacons, boîtes de conserve, canettes, barquettes, capsules de café.</p>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <i data-lucide="info" class="w-5 h-5 text-blue-500 shrink-0 mt-0.5"></i>
+                                <p class="text-sm text-gray-600"><strong>Conseil :</strong> Laissez les bouchons sur les bouteilles plastiques, ils se recyclent avec ! Aplatissez les bouteilles dans la longueur.</p>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <i data-lucide="x-circle" class="w-5 h-5 text-red-500 shrink-0 mt-0.5"></i>
+                                <p class="text-sm text-gray-600"><strong>Non :</strong> N'imbriquez pas les emballages les uns dans les autres, cela empêche les machines de les reconnaître.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Carte Verre -->
+                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition">
+                        <div class="bg-green-100 p-4 border-b border-green-200 flex items-center space-x-3">
+                            <div class="p-2 bg-ecoGreen text-white rounded-lg">
+                                <i data-lucide="glass-water" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900">Emballages en Verre</h4>
+                                <p class="text-xs text-green-800 font-medium">Bac Vert / Colonne à verre</p>
+                            </div>
+                        </div>
+                        <div class="p-5 space-y-3">
+                            <div class="flex items-start space-x-3">
+                                <i data-lucide="check-circle-2" class="w-5 h-5 text-ecoGreen shrink-0 mt-0.5"></i>
+                                <p class="text-sm text-gray-600"><strong>Oui :</strong> Bouteilles de vin/jus, pots de confiture, bocaux de sauces.</p>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <i data-lucide="info" class="w-5 h-5 text-blue-500 shrink-0 mt-0.5"></i>
+                                <p class="text-sm text-gray-600"><strong>Conseil :</strong> Enlevez impérativement les bouchons et couvercles (à jeter dans le bac jaune !).</p>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <i data-lucide="x-circle" class="w-5 h-5 text-red-500 shrink-0 mt-0.5"></i>
+                                <p class="text-sm text-gray-600"><strong>Non :</strong> Vaisselle cassée, verres à boire, miroirs ou ampoules. Leur composition chimique est différente du verre d'emballage.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Carte Papiers & Cartons -->
+                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition">
+                        <div class="bg-blue-50 p-4 border-b border-blue-100 flex items-center space-x-3">
+                            <div class="p-2 bg-blue-500 text-white rounded-lg">
+                                <i data-lucide="file-text" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900">Papiers & Cartons</h4>
+                                <p class="text-xs text-blue-800 font-medium">Bac Jaune (ou Bleu selon les villes)</p>
+                            </div>
+                        </div>
+                        <div class="p-5 space-y-3">
+                            <div class="flex items-start space-x-3">
+                                <i data-lucide="check-circle-2" class="w-5 h-5 text-ecoGreen shrink-0 mt-0.5"></i>
+                                <p class="text-sm text-gray-600"><strong>Oui :</strong> Boîtes de céréales, journaux, magazines, enveloppes (même avec fenêtre), courriers.</p>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <i data-lucide="info" class="w-5 h-5 text-blue-500 shrink-0 mt-0.5"></i>
+                                <p class="text-sm text-gray-600"><strong>Conseil :</strong> Aplatissez bien les gros cartons de livraison pour gagner de la place dans la poubelle.</p>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <i data-lucide="x-circle" class="w-5 h-5 text-red-500 shrink-0 mt-0.5"></i>
+                                <p class="text-sm text-gray-600"><strong>Non :</strong> Mouchoirs en papier, essuie-tout (à mettre dans le compost ou ordures ménagères). Papiers très gras ou salis.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Carte Déchets Spéciaux -->
+                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition">
+                        <div class="bg-red-50 p-4 border-b border-red-100 flex items-center space-x-3">
+                            <div class="p-2 bg-red-500 text-white rounded-lg">
+                                <i data-lucide="battery-warning" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900">Déchets Spéciaux</h4>
+                                <p class="text-xs text-red-800 font-medium">Points de collecte spécifiques</p>
+                            </div>
+                        </div>
+                        <div class="p-5 space-y-3">
+                            <div class="flex items-start space-x-3">
+                                <i data-lucide="alert-triangle" class="w-5 h-5 text-orange-500 shrink-0 mt-0.5"></i>
+                                <p class="text-sm text-gray-600"><strong>Attention :</strong> Piles, batteries, ampoules, médicaments, vêtements et petits électroménagers ne vont <strong>jamais</strong> à la poubelle.</p>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <i data-lucide="map-pin" class="w-5 h-5 text-ecoGreen shrink-0 mt-0.5"></i>
+                                <p class="text-sm text-gray-600"><strong>Solution :</strong> Utilisez l'outil "Scanner" de l'application Eco-Tri, nous vous indiquerons le point de dépôt le plus proche de chez vous !</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- SECTION 3 : Les Faux Amis -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+                <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                    <i data-lucide="ghost" class="w-6 h-6 mr-2 text-gray-400"></i> Les "Faux-Amis" du tri
+                </h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="text-center p-4 rounded-xl bg-gray-50 border border-gray-100">
+                        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm text-gray-500">
+                            <i data-lucide="coffee" class="w-6 h-6"></i>
+                        </div>
+                        <p class="font-bold text-sm text-gray-800">Verre à boire</p>
+                        <p class="text-xs text-gray-500 mt-1">Poubelle grise (ne fond pas à la même température que le verre d'emballage)</p>
+                    </div>
+                    <div class="text-center p-4 rounded-xl bg-gray-50 border border-gray-100">
+                        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm text-gray-500">
+                            <i data-lucide="thermometer" class="w-6 h-6"></i>
+                        </div>
+                        <p class="font-bold text-sm text-gray-800">Médicaments</p>
+                        <p class="text-xs text-gray-500 mt-1">À rapporter en pharmacie (Cyclamed)</p>
+                    </div>
+                    <div class="text-center p-4 rounded-xl bg-gray-50 border border-gray-100">
+                        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm text-gray-500">
+                            <i data-lucide="receipt" class="w-6 h-6"></i>
+                        </div>
+                        <p class="font-bold text-sm text-gray-800">Tickets de caisse</p>
+                        <p class="text-xs text-gray-500 mt-1">Poubelle grise (trop chimiques pour être recyclés avec le papier)</p>
+                    </div>
+                    <div class="text-center p-4 rounded-xl bg-gray-50 border border-gray-100">
+                        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm text-gray-500">
+                            <i data-lucide="pizza" class="w-6 h-6"></i>
+                        </div>
+                        <p class="font-bold text-sm text-gray-800">Boîte à pizza</p>
+                        <p class="text-xs text-gray-500 mt-1">Bac jaune s'il n'y a plus de nourriture. Si très grasse : poubelle grise.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Initialisation des icônes -->
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
