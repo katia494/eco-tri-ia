@@ -1,0 +1,62 @@
+{
+  "source": "Kaggle – Garbage Classification par cchangcs",
+  "url": "https://www.kaggle.com/datasets/asdasdasasdas/garbage-classification",
+  "date_collecte": "2026-08-28T18:45:10.341796",
+  "categories": {
+    "cardboard": {
+      "nom_francais": "Carton",
+      "nombre_images": 403,
+      "exemples": [
+        "cardboard1.jpg",
+        "cardboard10.jpg",
+        "cardboard100.jpg"
+      ]
+    },
+    "glass": {
+      "nom_francais": "Verre",
+      "nombre_images": 501,
+      "exemples": [
+        "glass1.jpg",
+        "glass10.jpg",
+        "glass100.jpg"
+      ]
+    },
+    "metal": {
+      "nom_francais": "Métal",
+      "nombre_images": 410,
+      "exemples": [
+        "metal1.jpg",
+        "metal10.jpg",
+        "metal100.jpg"
+      ]
+    },
+    "paper": {
+      "nom_francais": "Papier",
+      "nombre_images": 594,
+      "exemples": [
+        "paper1.jpg",
+        "paper10.jpg",
+        "paper100.jpg"
+      ]
+    },
+    "plastic": {
+      "nom_francais": "Plastique",
+      "nombre_images": 482,
+      "exemples": [
+        "plastic1.jpg",
+        "plastic10.jpg",
+        "plastic100.jpg"
+      ]
+    },
+    "trash": {
+      "nom_francais": "Ordures",
+      "nombre_images": 137,
+      "exemples": [
+        "trash1.jpg",
+        "trash10.jpg",
+        "trash100.jpg"
+      ]
+    }
+  },
+  "total_images": 2527
+}
