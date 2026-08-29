@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 from datetime import datetime
 from typing import Optional
 
@@ -17,12 +17,20 @@ class PredictionResponse(PredictionBase):
     id: int
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class PredictResponse(BaseModel):
     """Schéma de réponse de l'endpoint /predict."""
     waste_class: str
     confidence: float
+    model: str
     message: str
     image_name: str
+    sorting_instruction: str
+
+class ModelInfoResponse(BaseModel):
+    """Informations publiques sur le modèle chargé par l'API."""
+    name: str
+    task: str
+    classes: list[str]
+    input_size: int

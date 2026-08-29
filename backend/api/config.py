@@ -1,5 +1,4 @@
-from pydantic_settings import BaseSettings
-from typing import Optional
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     """Configuration centralisée de l'application ECO-TRI."""
@@ -13,14 +12,14 @@ class Settings(BaseSettings):
     database_url: str = "sqlite:///./eco_tri.db"
 
     # Modèle IA
-    model_path: str = "backend/models/yolo_waste.pt"
+    model_path: str = "backend/models/best.pt"
+    model_version: str = "yolov8n-cls-v1"
     confidence_threshold: float = 0.5
+    max_upload_bytes: int = 10 * 1024 * 1024
 
     # CORS
     allowed_origins: list = ["http://localhost:5173"]
 
-    class Config:
-        env_file = ".env"
-        case_sensitive = False
+    model_config = SettingsConfigDict(env_file=".env", case_sensitive=False)
 
 settings = Settings()

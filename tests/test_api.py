@@ -1,6 +1,5 @@
-import pytest
 from fastapi.testclient import TestClient
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 from backend.api.main import app
 
 client = TestClient(app)
@@ -39,10 +38,12 @@ def test_predict_with_image():
 
     with patch("backend.api.routes.predict_waste") as mock_predict:
         mock_predict.return_value = {
-            "waste_class": "plastique",
+            "waste_class": "plastic",
             "confidence": 0.92,
+            "model": "yolov8n-cls-v1",
             "image_name": "test.jpg",
-            "message": "Déchet classifié : plastique"
+            "message": "Déchet classifié : plastic",
+            "sorting_instruction": "Déposez-le dans le bac de tri."
         }
         response = client.post(
             "/predict",
@@ -51,8 +52,22 @@ def test_predict_with_image():
 
     assert response.status_code == 200
     data = response.json()
-    assert data["waste_class"] == "plastique"
+    assert data["waste_class"] == "plastic"
     assert data["confidence"] == 0.92
+
+def test_predict_rejects_text_file():
+    response = client.post(
+        "/predict",
+        files={"file": ("notes.txt", b"pas une image", "text/plain")},
+    )
+    assert response.status_code == 400
+
+def test_model_info():
+    response = client.get("/model/info")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["task"] == "image-classification"
+    assert len(data["classes"]) == 6
 
 def test_get_predictions():
     """Teste la récupération de l'historique."""

@@ -34,10 +34,12 @@ def test_stats_after_prediction():
 
     with patch("backend.api.routes.predict_waste") as mock_predict:
         mock_predict.return_value = {
-            "waste_class": "verre",
+            "waste_class": "glass",
             "confidence": 0.88,
+            "model": "yolov8n-cls-v1",
             "image_name": "test.jpg",
-            "message": "Déchet classifié : verre"
+            "message": "Déchet classifié : glass",
+            "sorting_instruction": "Conteneur à verre."
         }
         client.post(
             "/predict",

@@ -1,0 +1,7 @@
+actual/predicted,cardboard,glass,metal,paper,plastic,trash
+cardboard,52,0,1,7,1,0
+glass,0,74,0,0,2,0
+metal,0,5,54,1,1,1
+paper,0,0,2,84,0,4
+plastic,0,4,2,1,65,1
+trash,0,0,0,0,1,21
