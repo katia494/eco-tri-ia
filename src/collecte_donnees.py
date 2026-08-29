@@ -1,7 +1,7 @@
 """
 Script de collecte des données - ECO-TRI
 Compétence C1 : Collecte de données réelles depuis une source externe
-Dataset : Garbage Classification (Kaggle - cchangcs)
+Dataset : Garbage Classification (Kaggle - asdasdasasdas)
 URL : https://www.kaggle.com/datasets/asdasdasasdas/garbage-classification
 """
 
@@ -36,7 +36,7 @@ def collecter_statistiques() -> dict:
     Sauvegarde le résultat dans data/processed/statistiques_dataset.json
     """
     stats = {
-        "source":        "Kaggle – Garbage Classification par cchangcs",
+        "source":        "Kaggle – Garbage Classification par asdasdasasdas",
         "url":           "https://www.kaggle.com/datasets/asdasdasasdas/garbage-classification",
         "date_collecte": datetime.now().isoformat(),
         "categories":    {},

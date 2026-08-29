@@ -7,7 +7,7 @@ import Scan from './Scan/Scan'
 import Profil from './Profil/Profil'
 import BonnesPratiques from './Bonnes P/Bonnes_Pratiques'
 import ChatBot from './ChatBot/chatbot'
-import Dashboard from './Dashboard/dashboard'
+import Dashboard from './Dashboard/Dashboard'
 import LeGame from './Classement/Le game'
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
     <ThemeProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Navigate to="/connexion" replace />} />
+          <Route path="/" element={<Navigate to="/scan" replace />} />
           <Route path="/connexion" element={<Connexion />} />
           <Route path="/inscription" element={<Inscription />} />
           <Route path="/passe-oublie" element={<PasseOublie />} />

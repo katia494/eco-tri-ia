@@ -1,67 +1,37 @@
-# Benchmark des services IA – ECO-TRI
+# Benchmark des modèles - ECO-TRI
 
-> **Auteure** : Katia Boussad – Formation Dev IA, Simplon  
-> **Date** : Août 2026
+## Besoin
 
----
+Classifier une photographie entière dans six catégories, localement, avec un
+modèle léger et une réponse adaptée à une application web.
 
-## 1. Besoin reformulé
+## Comparaison
 
-Classer automatiquement des images de déchets en 6 catégories :
-cardboard, glass, metal, paper, plastic, trash.
+| Solution | Adaptation aux images | Coût | Complexité | Décision |
+|---|---|---|---|---|
+| Random Forest sur pixels | Faible : structure spatiale perdue | Gratuit | Faible | Baseline uniquement |
+| XGBoost sur pixels | Faible à moyenne | Gratuit | Moyenne | Comparatif uniquement |
+| YOLOv8 Detect | Bonne avec bounding boxes | Gratuit | Élevée | Écarté : aucune bounding box |
+| MobileNetV3 | Très bonne | Gratuit | Moyenne | Alternative pertinente |
+| YOLOv8n-cls | Très bonne pour une classe par image | Gratuit | Moyenne | **Retenu** |
+| Google/AWS Vision | Bonne | Payant/cloud | Faible | Écarté : coût et transfert d'images |
 
-**Contraintes** : gratuit, local, rapide, sans données personnelles.
+## Résultat du modèle retenu
 
----
+- entraînement : 1 766 images ;
+- validation : 377 images ;
+- test indépendant : 384 images ;
+- accuracy test : **91,15 %** ;
+- macro F1 test : **90,47 %** ;
+- meilleur entraînement : époque 12 avec arrêt anticipé ;
+- taille du modèle : environ 2,9 Mo.
 
-## 2. Services et modèles étudiés
-Service	Fonctionnel	Technique	Coût	Risque	Décision
-Scikit-learn (Random Forest)	✅ Fort	✅ Simple	✅ Gratuit	✅ Faible	✅ RETENU
-YOLOv8 (Ultralytics)	✅ Fort	⚠️ Complexe	✅ Gratuit	⚠️ Moyen	❌ Écarté
-Google Vision API	✅ Très fort	✅ Simple	❌ Payant	❌ Cloud	❌ Écarté
-AWS Rekognition	✅ Très fort	⚠️ Moyen	❌ Payant	❌ Cloud	❌ Écarté
-TensorFlow CNN	✅ Fort	❌ Complexe	✅ Gratuit	⚠️ Moyen	❌ Écarté
+Les métriques par classe et la matrice de confusion se trouvent dans
+`reports/model`. Le score de validation n'est pas présenté comme score final :
+seul le jeu de test indépendant sert à annoncer la performance finale.
 
+## Justification
 
-3. Pourquoi on a écarté les autres
-YOLOv8 → Trop complexe à intégrer dans le délai du projet.
-Prévu pour la détection d'objets en temps réel, pas optimal
-pour la classification simple sur 6 catégories.
-
-Google Vision API → Service cloud payant.
-Les images seraient envoyées vers les serveurs Google
-→ problème RGPD + coût incompatible avec le budget.
-
-AWS Rekognition → Même problème que Google Vision.
-Payant, cloud, données envoyées hors de France.
-
-TensorFlow CNN → Trop long à entraîner et à configurer
-pour le délai disponible. Surpuissant pour notre dataset de 2527 images.
-
-4. Pourquoi on a retenu Scikit-learn
-✅ Gratuit et open source
-✅ Local — aucune donnée envoyée sur internet
-✅ Rapide à entraîner (quelques secondes)
-✅ Documenté — documentation officielle claire
-✅ Conforme RGPD — pas de cloud, pas de fuite de données
-✅ 94% de précision sur notre dataset
-
-
-5. Résultat du test minimal
-bash
-Copy
-python src/collecte_donnees.py
-→ 2527 images collectées ✅
-
-python src/import_data.py  
-→ Base de données créée ✅
-
-uvicorn backend.api.main:app --reload
-→ API démarrée sur http://localhost:8000 ✅
-
-GET http://localhost:8000/health
-→ {"status": "ok", "message": "ECO-TRI API is running"} ✅
-
-6. Conclusion
-Scikit-learn Random Forest est le choix optimal pour ECO-TRI :
-simple, gratuit, local, performant et conforme RGPD.
+YOLOv8n-cls conserve l'information spatiale de l'image, utilise des poids
+préentraînés et reste suffisamment léger pour une API CPU. Ce choix correspond au
+dataset par dossiers et ne nécessite pas d'inventer des annotations de détection.

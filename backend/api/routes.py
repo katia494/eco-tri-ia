@@ -3,8 +3,10 @@ from sqlalchemy.orm import Session
 from typing import List
 from backend.api.database import get_db
 from backend.api.models import Prediction
-from backend.api.schemas import PredictionResponse, PredictResponse
-from backend.api.predict import predict_waste
+from backend.api.schemas import PredictionResponse, PredictResponse, ModelInfoResponse
+from backend.api.predict import CATEGORIES, predict_waste
+from backend.api.config import settings
+from backend.api.exceptions import ImageTooLargeError, InvalidImageError
 
 router = APIRouter()
 
@@ -17,13 +19,19 @@ async def predict(
     Classifie un déchet à partir d'une image uploadée.
     Sauvegarde le résultat en base de données.
     """
-    if not file.content_type.startswith("image/"):
+    if file.content_type not in {"image/jpeg", "image/png"}:
         raise HTTPException(
             status_code=400,
-            detail="Le fichier doit être une image"
+            detail="Seuls les fichiers JPG et PNG sont acceptés."
         )
 
     image_bytes = await file.read()
+    if not image_bytes:
+        raise InvalidImageError("Le fichier envoyé est vide.")
+    if len(image_bytes) > settings.max_upload_bytes:
+        raise ImageTooLargeError(
+            f"Le fichier fait {len(image_bytes)} octets, limite : {settings.max_upload_bytes}."
+        )
     result = predict_waste(image_bytes, file.filename)
 
     # Sauvegarde en base de données
@@ -37,6 +45,16 @@ async def predict(
     db.refresh(prediction)
 
     return result
+
+@router.get("/model/info", response_model=ModelInfoResponse, tags=["Modèle"])
+def get_model_info():
+    """Décrit le modèle utilisé sans déclencher une inférence."""
+    return {
+        "name": settings.model_version,
+        "task": "image-classification",
+        "classes": CATEGORIES,
+        "input_size": 224,
+    }
 
 @router.get("/predictions", response_model=List[PredictionResponse])
 def get_predictions(

@@ -5,7 +5,7 @@ import {
     Leaf, ScanLine, LayoutDashboard, Trophy, BookOpen,
     Coffee, Settings, MapPin, Sprout, Package, CloudSnow,
     Lightbulb, Sparkles, BatteryWarning, Store, Building,
-    Map, Trash2, CheckCircle, XCircle, Camera, CameraOff, ChevronRight, MessageCircle
+    Map, Trash2, CheckCircle, XCircle, Camera, CameraOff, ChevronRight, MessageCircle, Upload
 } from 'lucide-react';
 
 const styles = `
@@ -17,13 +17,13 @@ const styles = `
 .scanner-focus { animation: pulse-border 2s infinite; }
 `;
 
-const MOCK_AI_RESULT = {
-    label: 'Bouteille en Plastique',
-    confidence: 62,
-    instruction: 'Vider sans rincer, laisser le bouchon.',
-    bin: 'BAC JAUNE',
-    binColor: 'bg-yellow-400 text-yellow-900 border-yellow-500',
-    points: 5,
+const INITIAL_RESULT = {
+    label: '',
+    confidence: 0,
+    instruction: '',
+    bin: '',
+    binColor: 'bg-gray-500 text-white border-gray-600',
+    points: 0,
 };
 
 function Sidebar() {
@@ -82,6 +82,7 @@ function Sidebar() {
 function CameraZone({ aiResult: defaultResult, onConfirm, onCorrect }) {
     const videoRef = useRef(null);
     const streamRef = useRef(null);
+    const fileInputRef = useRef(null);
     const [cameraActive, setCameraActive] = useState(false);
     const [cameraError, setCameraError] = useState(null);
     const [showResult, setShowResult] = useState(false);
@@ -89,38 +90,58 @@ function CameraZone({ aiResult: defaultResult, onConfirm, onCorrect }) {
 
     const mapApiToUI = (data) => {
         const binMap = {
-            plastique: { bin: 'BAC JAUNE',  binColor: 'bg-yellow-400 text-yellow-900 border-yellow-500' },
-            verre:     { bin: 'BAC VERT',   binColor: 'bg-green-500 text-white border-green-600' },
-            papier:    { bin: 'BAC BLEU',   binColor: 'bg-blue-500 text-white border-blue-600' },
-            carton:    { bin: 'BAC BLEU',   binColor: 'bg-blue-500 text-white border-blue-600' },
+            plastic:   { bin: 'BAC JAUNE',  binColor: 'bg-yellow-400 text-yellow-900 border-yellow-500' },
+            glass:     { bin: 'BAC VERT',   binColor: 'bg-green-500 text-white border-green-600' },
+            paper:     { bin: 'BAC BLEU',   binColor: 'bg-blue-500 text-white border-blue-600' },
+            cardboard: { bin: 'BAC BLEU',   binColor: 'bg-blue-500 text-white border-blue-600' },
             metal:     { bin: 'BAC JAUNE',  binColor: 'bg-yellow-400 text-yellow-900 border-yellow-500' },
-            organique: { bin: 'BAC MARRON', binColor: 'bg-amber-700 text-white border-amber-800' },
+            trash:     { bin: 'ORDURES MÉNAGÈRES', binColor: 'bg-gray-500 text-white border-gray-600' },
         };
         const label = data.waste_class || data.label || data.class_name || 'Objet inconnu';
         const confidence = Math.round((data.confidence || 0.5) * 100);
         const cat = Object.keys(binMap).find(k => label.toLowerCase().includes(k));
         const { bin, binColor } = binMap[cat] ?? { bin: 'ORDURES MÉNAGÈRES', binColor: 'bg-gray-500 text-white border-gray-600' };
-        return { label, confidence, instruction: data.message || data.instruction || 'Vider sans rincer.', bin, binColor, points: data.points ?? 10 };
+        return { label, confidence, instruction: data.sorting_instruction || data.message, bin, binColor, points: data.points ?? 10 };
     };
 
-    const detectFromCamera = async () => {
-        try {
-            if (!videoRef.current || videoRef.current.videoWidth === 0) return defaultResult;
-            const canvas = document.createElement('canvas');
-            canvas.width = videoRef.current.videoWidth;
-            canvas.height = videoRef.current.videoHeight;
-            canvas.getContext('2d').drawImage(videoRef.current, 0, 0);
-            const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.85));
+    const requestPrediction = async (blob, filename) => {
             const body = new FormData();
-            body.append('file', blob, 'scan.jpg');
+            body.append('file', blob, filename);
             const res = await fetch('/predict', { method: 'POST', body });
-            if (!res.ok) throw new Error(`Erreur HTTP ${res.status}`);
+            if (!res.ok) {
+                const errorBody = await res.json().catch(() => ({}));
+                throw new Error(errorBody.detail || errorBody.message || `Erreur HTTP ${res.status}`);
+            }
             const data = await res.json();
             console.log('[ECO-TRI] Résultat IA :', data);
             return mapApiToUI(data);
-        } catch (err) {
-            console.warn('[ECO-TRI] Backend indisponible → mode démo :', err.message);
-            return defaultResult;
+    };
+
+    const detectFromCamera = async () => {
+        if (!videoRef.current || videoRef.current.videoWidth === 0) {
+            throw new Error("La caméra n'est pas encore prête.");
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = videoRef.current.videoWidth;
+        canvas.height = videoRef.current.videoHeight;
+        canvas.getContext('2d').drawImage(videoRef.current, 0, 0);
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.85));
+        return requestPrediction(blob, 'scan.jpg');
+    };
+
+    const handleFileUpload = async (event) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+        setCameraError(null);
+        setShowResult(false);
+        try {
+            const result = await requestPrediction(file, file.name);
+            setCurrentResult(result);
+            setShowResult(true);
+        } catch (error) {
+            setCameraError(`L'analyse a échoué : ${error.message}`);
+        } finally {
+            event.target.value = '';
         }
     };
 
@@ -138,11 +159,17 @@ function CameraZone({ aiResult: defaultResult, onConfirm, onCorrect }) {
             }
             setCameraActive(true);
             setTimeout(async () => {
-                const result = await detectFromCamera();
-                setCurrentResult(result);
-                setShowResult(true);
+                try {
+                    const result = await detectFromCamera();
+                    setCurrentResult(result);
+                    setShowResult(true);
+                } catch (error) {
+                    console.error('[ECO-TRI] Échec de la prédiction :', error);
+                    setCameraError("L'analyse a échoué. Vérifiez que l'API est démarrée puis réessayez.");
+                    setShowResult(false);
+                }
             }, 2500);
-        } catch (err) {
+        } catch {
             setCameraError("Impossible d'accéder à la caméra. Vérifiez les permissions.");
         }
     };
@@ -170,6 +197,16 @@ function CameraZone({ aiResult: defaultResult, onConfirm, onCorrect }) {
                     <button onClick={startCamera} className="mt-2 flex items-center space-x-2 bg-ecoGreen hover:bg-green-700 text-white px-5 py-2.5 rounded-xl font-medium text-sm transition">
                         <Camera className="w-4 h-4" /><span>Activer la caméra</span>
                     </button>
+                    <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/jpeg,image/png"
+                        onChange={handleFileUpload}
+                        className="hidden"
+                    />
+                    <button onClick={() => fileInputRef.current?.click()} className="flex items-center space-x-2 bg-white hover:bg-gray-100 text-gray-800 px-5 py-2.5 rounded-xl font-medium text-sm transition">
+                        <Upload className="w-4 h-4" /><span>Choisir une image</span>
+                    </button>
                 </div>
             )}
             {cameraActive && (
@@ -187,7 +224,7 @@ function CameraZone({ aiResult: defaultResult, onConfirm, onCorrect }) {
                     <CameraOff className="w-3.5 h-3.5" /><span>Arrêter</span>
                 </button>
             )}
-            {showResult && cameraActive && (
+            {showResult && (
                 <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 w-11/12 max-w-md bg-white/95 backdrop-blur-sm p-4 rounded-xl shadow-2xl border border-gray-200">
                     <div className="flex items-start justify-between">
                         <div>
@@ -226,10 +263,10 @@ export default function Scan() {
     const [points, setPoints] = useState(450);
     const [dechets, setDechets] = useState(142);
     const [locationLabel, setLocationLabel] = useState(null);
-    const [locationError, setLocationError] = useState(false);
+    const [locationError, setLocationError] = useState(() => !navigator.geolocation);
 
     useEffect(() => {
-        if (!navigator.geolocation) { setLocationError(true); return; }
+        if (!navigator.geolocation) return;
         navigator.geolocation.getCurrentPosition(
             async ({ coords }) => {
                 try {
@@ -301,7 +338,7 @@ export default function Scan() {
                     </header>
                     <div className="p-8 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-3 gap-8">
                         <div className="col-span-1 lg:col-span-2 space-y-6">
-                            <CameraZone aiResult={MOCK_AI_RESULT} onConfirm={handleConfirm} onCorrect={handleCorrect} />
+                            <CameraZone aiResult={INITIAL_RESULT} onConfirm={handleConfirm} onCorrect={handleCorrect} />
                             <div className="grid grid-cols-2 gap-4">
                                 <div className={`${cardBg} p-5 rounded-2xl shadow-sm border flex items-center space-x-4 transition-colors duration-300`}>
                                     <div className="p-3 bg-blue-50 text-blue-600 rounded-xl"><Package className="w-6 h-6" /></div>

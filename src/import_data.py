@@ -1,7 +1,7 @@
 """
 Script d'import des données dans SQLite – ECO-TRI
 Compétence C4 : Intégration du dataset dans une base de données
-Dataset : Garbage Classification (Kaggle – cchangcs)
+Dataset : Garbage Classification (Kaggle – asdasdasasdas)
 """
 
 import sqlite3

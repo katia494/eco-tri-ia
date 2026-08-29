@@ -1,7 +1,7 @@
 -- ============================================================
 -- Schéma de la base de données ECO-TRI
 -- Compétence C4 : Conception et création de la base de données
--- Dataset source : Kaggle – Garbage Classification (cchangcs)
+-- Dataset source : Kaggle – Garbage Classification (asdasdasasdas)
 -- ============================================================
 
 -- Table 1 : Catalogue de toutes les images du dataset

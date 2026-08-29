@@ -1,3 +1,5 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -14,14 +16,24 @@ from backend.api.exceptions import (
     invalid_image_handler,
     model_not_found_handler
 )
+from backend.api.config import settings
 
 # Crée les tables automatiquement au démarrage
 Base.metadata.create_all(bind=engine)
 
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    logger.info("ECO-TRI API démarrée avec succès")
+    logger.info("Documentation disponible sur /docs")
+    yield
+    logger.info("ECO-TRI API arrêtée")
+
+
 app = FastAPI(
     title="ECO-TRI API",
-    description="API de classification des déchets par IA (YOLOv8)",
-    version="1.0.0"
+    description="API de classification d'images de déchets avec YOLOv8n-cls",
+    version="1.0.0",
+    lifespan=lifespan,
 )
 
 # Middleware de logging
@@ -45,17 +57,6 @@ app.add_exception_handler(ModelNotFoundError, model_not_found_handler)
 app.include_router(router)
 app.include_router(router_stats)
 
-@app.on_event("startup")
-async def startup_event():
-    """Actions au démarrage de l'API."""
-    logger.info("ECO-TRI API démarrée avec succès 🌿")
-    logger.info("Documentation disponible sur /docs")
-
-@app.on_event("shutdown")
-async def shutdown_event():
-    """Actions à l'arrêt de l'API."""
-    logger.info("ECO-TRI API arrêtée")
-
 @app.get("/health")
 def health_check():
     """Vérifie que l'API est opérationnelle."""
@@ -63,7 +64,8 @@ def health_check():
     return {
         "status": "ok",
         "message": "ECO-TRI API is running",
-        "version": "1.0.0"
+        "version": "1.0.0",
+        "model": settings.model_version
     }
 
 @app.get("/")
