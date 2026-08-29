@@ -11,7 +11,7 @@ ENCODER_PATH = os.path.join(BASE_DIR, "models", "label_encoder.pkl")
 
 # ─── Catégories dans le bon ordre ──────────────────────────────────
 CATEGORIES = ["cardboard", "glass", "metal", "paper", "plastic", "trash"]
-
+WASTE_CLASSES = CATEGORIES
 # ─── Chargement du modèle ──────────────────────────────────────────
 model = joblib.load(MODEL_PATH)
 label_encoder = joblib.load(ENCODER_PATH)
