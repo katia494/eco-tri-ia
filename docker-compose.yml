@@ -1,29 +1,15 @@
-version: '3.8'
-
 services:
-  db:
-    image: postgres:15
-    container_name: eco_tri_db
-    environment:
-      POSTGRES_USER: ecotri
-      POSTGRES_PASSWORD: ecotri123
-      POSTGRES_DB: eco_tri_db
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-
   api:
     build: .
     container_name: eco_tri_api
     environment:
-      DATABASE_URL: postgresql://ecotri:ecotri123@db:5432/eco_tri_db
+      DATABASE_URL: sqlite:////app/data/eco_tri.db
+      MODEL_PATH: backend/models/best.pt
     ports:
       - "8000:8000"
-    depends_on:
-      - db
     volumes:
-      - .:/app
+      - eco_tri_data:/app/data
+    restart: unless-stopped
 
 volumes:
-  postgres_data:
+  eco_tri_data:
