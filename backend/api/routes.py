@@ -1,13 +1,21 @@
-from fastapi import APIRouter, UploadFile, File, Depends, HTTPException
+from fastapi import APIRouter, UploadFile, File, Depends, HTTPException,Query
 from sqlalchemy.orm import Session
 from typing import List
 from backend.api.database import get_db
 from backend.api.models import Prediction
-from backend.api.schemas import PredictionResponse, PredictResponse, ModelInfoResponse
+from backend.api.schemas import (
+    PredictionResponse,
+    PredictResponse,
+    ModelInfoResponse,
+    CollectionPointsResponse,
+)
 from backend.api.predict import CATEGORIES, predict_waste
 from backend.api.config import settings
 from backend.api.exceptions import ImageTooLargeError, InvalidImageError
-
+from backend.api.collection_points import (
+    CollectionPointsProviderError,
+    get_collection_points,
+)
 router = APIRouter()
 
 @router.post("/predict", response_model=PredictResponse)
@@ -75,3 +83,38 @@ def get_prediction(prediction_id: int, db: Session = Depends(get_db)):
     if not prediction:
         raise HTTPException(status_code=404, detail="Prédiction non trouvée")
     return prediction
+
+
+@router.get(
+    "/collection-points",
+    response_model=CollectionPointsResponse,
+    tags=["Points de collecte"],
+)
+def get_nearby_collection_points(
+    latitude: float = Query(..., ge=-90, le=90),
+    longitude: float = Query(..., ge=-180, le=180),
+    waste_type: str = Query(..., min_length=3, max_length=20),
+    radius_meters: int = Query(3000, ge=100, le=10_000),
+):
+    """
+    Recherche les points de collecte proches compatibles avec
+    le type de déchet reconnu.
+    """
+    try:
+        points = get_collection_points(
+            latitude=latitude,
+            longitude=longitude,
+            waste_type=waste_type,
+            radius_meters=radius_meters,
+        )
+    except ValueError as error:
+        raise HTTPException(status_code=422, detail=str(error)) from error
+    except CollectionPointsProviderError as error:
+        raise HTTPException(status_code=503, detail=str(error)) from error
+
+    return {
+        "waste_type": waste_type,
+        "radius_meters": radius_meters,
+        "provider": "OpenStreetMap / Overpass",
+        "points": points,
+    }
