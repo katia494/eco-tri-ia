@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
 from backend.api.routes import router
 from backend.api.routes_stats import router_stats
-from backend.api.database import engine, Base
+from backend.api.database import engine, Base, migrate_legacy_predictions_schema
 from backend.api.logger import logger
 from backend.api.middleware import log_requests
 from backend.api.exceptions import (
@@ -18,7 +18,8 @@ from backend.api.exceptions import (
 )
 from backend.api.config import settings
 
-# Crée les tables automatiquement au démarrage
+# Archive un éventuel ancien schéma puis crée les tables attendues.
+migrate_legacy_predictions_schema()
 Base.metadata.create_all(bind=engine)
 
 @asynccontextmanager

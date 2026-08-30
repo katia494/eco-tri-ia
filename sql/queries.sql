@@ -29,13 +29,13 @@ LIMIT 10;
 
 -- 4. Précision moyenne des prédictions IA par catégorie
 SELECT
-    categorie_predite,
+    waste_class,
     COUNT(*) AS nombre_predictions,
-    ROUND(AVG(confiance) * 100, 2) AS confiance_moyenne_pct,
-    ROUND(MAX(confiance) * 100, 2) AS meilleure_confiance_pct,
-    ROUND(MIN(confiance) * 100, 2) AS moins_bonne_confiance_pct
+    ROUND(AVG(confidence) * 100, 2) AS confiance_moyenne_pct,
+    ROUND(MAX(confidence) * 100, 2) AS meilleure_confiance_pct,
+    ROUND(MIN(confidence) * 100, 2) AS moins_bonne_confiance_pct
 FROM predictions
-GROUP BY categorie_predite
+GROUP BY waste_class
 ORDER BY confiance_moyenne_pct DESC;
 
 -- 5. Catégories sous-représentées (moins de 200 images)
@@ -47,12 +47,12 @@ ORDER BY nombre ASC;
 
 -- 6. Les 20 dernières prédictions
 SELECT
-    image_path,
-    categorie_predite,
-    ROUND(confiance * 100, 1) AS confiance_pct,
-    date_prediction
+    image_name,
+    waste_class,
+    ROUND(confidence * 100, 1) AS confiance_pct,
+    created_at
 FROM predictions
-ORDER BY date_prediction DESC
+ORDER BY created_at DESC
 LIMIT 20;
 
 -- 7. Vue : distribution complète pour les graphiques

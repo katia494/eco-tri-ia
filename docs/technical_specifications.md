@@ -37,16 +37,20 @@ Sortie :
 {
   "waste_class": "plastic",
   "confidence": 0.91,
-  "model": "yolov8n-cls-v1",
+  "model": "yolov8n-cls-v2",
   "image_name": "bouteille.jpg",
   "sorting_instruction": "Videz l'emballage...",
-  "message": "Déchet classifié comme plastic avec 91.0 % de confiance."
+  "message": "Déchet classifié comme plastic avec 91.0 % de confiance.",
+  "is_uncertain": false
 }
 ```
 
 ## Choix et compromis
 
 - SQLite est retenu pour un MVP local reproductible ; PostgreSQL est une évolution.
+- Le fichier unique `data/eco_tri.db` est généré localement et n'est pas versionné.
+- Si l'ancien schéma français est détecté, la table est conservée sous le nom
+  `predictions_legacy` avant la création du schéma unifié.
 - Le modèle est chargé paresseusement une fois, afin que `/health` reste disponible.
 - Les tests API simulent l'inférence ; l'évaluation séparée utilise le vrai modèle.
 - L'API ne conserve pas les images afin de minimiser les données.

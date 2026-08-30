@@ -1,0 +1,18 @@
+{
+  "decision": "Conserver la copie correctement étiquetée glass et exclure les copies contradictoires.",
+  "method": "Doublons exacts SHA-256 puis vérification visuelle.",
+  "files": [
+    {
+      "path": "metal/metal91.jpg",
+      "reason": "Copie exacte de glass/glass115.jpg ; l'objet est en verre."
+    },
+    {
+      "path": "plastic/plastic152.jpg",
+      "reason": "Copie exacte de glass/glass176.jpg ; l'objet est en verre."
+    },
+    {
+      "path": "plastic/plastic332.jpg",
+      "reason": "Copie exacte de glass/glass389.jpg ; l'objet est en verre."
+    }
+  ]
+}

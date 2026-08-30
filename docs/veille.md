@@ -14,12 +14,14 @@ images, tout en restant léger, local et intégrable dans une API FastAPI ?
 
 ## Sources retenues
 
-| Source | Information utile | Impact sur ECO-TRI |
-|---|---|---|
-| Documentation Ultralytics - Classification | Une image entière peut être classée sans bounding boxes | Choix de YOLOv8n-cls et non YOLO Detect |
-| Documentation Ultralytics - Train/Val/Export | Entraînement, validation et export reproductibles | Scripts séparés de préparation, entraînement et évaluation |
-| Documentation XGBoost | XGBoost est un ensemble d'arbres optimisé | Conservé comme comparatif, pas comme modèle final d'images |
-| Guide Keras Transfer Learning | Le transfert est adapté aux petits datasets | Justifie l'utilisation de poids préentraînés |
+Consultation vérifiée le **30 août 2026**.
+
+| Source | Auteur | Fiabilité | Information utile | Impact sur ECO-TRI |
+|---|---|---|---|---|
+| [Classification Ultralytics](https://docs.ultralytics.com/tasks/classify/) | Ultralytics | Source primaire, documentation officielle | La classification attribue une classe à l'image entière | Choix de YOLOv8n-cls |
+| [Configuration Ultralytics](https://docs.ultralytics.com/usage/cfg/) | Ultralytics | Source primaire, paramètres maintenus | Les tâches `classify` et `detect` répondent à des contrats différents | YOLO Detect écarté faute de bounding boxes |
+| [MobileNetV3](https://docs.pytorch.org/vision/stable/models/mobilenetv3.html) | PyTorch/Torchvision | Source primaire, documentation officielle | Architecture légère avec poids préentraînés | Alternative locale retenue pour une future comparaison |
+| [Recommandations IA et RGPD](https://www.cnil.fr/fr/developpement-des-systemes-dia-les-recommandations-de-la-cnil-pour-respecter-le-rgpd) | CNIL | Autorité publique française | Minimisation et maîtrise des données traitées | Les images envoyées ne sont pas conservées |
 
 ## Décision issue de la veille
 
@@ -30,6 +32,7 @@ des pixels détruit une partie de l'information spatiale.
 
 ## Limites et poursuite
 
-La veille devra suivre les nouvelles versions Ultralytics, les vulnérabilités des
-dépendances et les modèles légers comme MobileNet/EfficientNet. Toute mise à jour
-du modèle exige une nouvelle évaluation sur le même jeu de test.
+La veille est revue avant chaque changement du modèle et au minimum une fois par
+mois. Elle suit les versions Ultralytics, les vulnérabilités des dépendances et
+les modèles légers comme MobileNet. Toute mise à jour exige une nouvelle
+évaluation sur le même protocole de test.

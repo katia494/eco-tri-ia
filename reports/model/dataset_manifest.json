@@ -1,0 +1,45 @@
+{
+  "seed": 42,
+  "ratios": {
+    "train": 0.7,
+    "val": 0.15,
+    "test": 0.15
+  },
+  "excluded_files": [
+    "metal/metal91.jpg",
+    "plastic/plastic152.jpg",
+    "plastic/plastic332.jpg"
+  ],
+  "classes": {
+    "cardboard": {
+      "train": 282,
+      "val": 60,
+      "test": 61
+    },
+    "glass": {
+      "train": 350,
+      "val": 75,
+      "test": 76
+    },
+    "metal": {
+      "train": 286,
+      "val": 61,
+      "test": 62
+    },
+    "paper": {
+      "train": 415,
+      "val": 89,
+      "test": 90
+    },
+    "plastic": {
+      "train": 336,
+      "val": 72,
+      "test": 72
+    },
+    "trash": {
+      "train": 95,
+      "val": 20,
+      "test": 22
+    }
+  }
+}

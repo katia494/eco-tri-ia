@@ -36,10 +36,11 @@ def test_stats_after_prediction():
         mock_predict.return_value = {
             "waste_class": "glass",
             "confidence": 0.88,
-            "model": "yolov8n-cls-v1",
+            "model": "yolov8n-cls-v2",
             "image_name": "test.jpg",
             "message": "Déchet classifié : glass",
-            "sorting_instruction": "Conteneur à verre."
+            "sorting_instruction": "Conteneur à verre.",
+            "is_uncertain": False,
         }
         client.post(
             "/predict",
@@ -50,3 +51,15 @@ def test_stats_after_prediction():
     assert response.status_code == 200
     data = response.json()
     assert data["total_predictions"] >= 0
+
+
+def test_get_monitoring_metrics():
+    """Vérifie le contrat des métriques de monitoring."""
+    response = client.get("/stats/monitoring")
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["application"]["request_count"] >= 0
+    assert data["model"]["confidence_threshold"] == 0.60
+    assert data["model"]["uncertain_prediction_rate"] == 0.0
+    assert data["alert_thresholds"]["latency_ms"] == 2000

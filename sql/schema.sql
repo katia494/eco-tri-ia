@@ -1,35 +1,37 @@
 -- ============================================================
 -- Schéma de la base de données ECO-TRI
 -- Compétence C4 : Conception et création de la base de données
+-- Moteur retenu : SQLite
 -- Dataset source : Kaggle – Garbage Classification (asdasdasasdas)
 -- ============================================================
 
 -- Table 1 : Catalogue de toutes les images du dataset
 CREATE TABLE IF NOT EXISTS dechets (
-    id           SERIAL PRIMARY KEY,
-    nom_fichier  VARCHAR(255) NOT NULL,
-    categorie    VARCHAR(50)  NOT NULL,
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    nom_fichier  TEXT NOT NULL,
+    categorie    TEXT NOT NULL,
     chemin_image TEXT,
-    source       VARCHAR(100) DEFAULT 'Kaggle-GarbageClassification',
-    date_ajout   TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
+    source       TEXT DEFAULT 'Kaggle-GarbageClassification',
+    date_ajout   TEXT DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(nom_fichier, categorie)
 );
 
 -- Table 2 : Prédictions faites par le modèle IA
 CREATE TABLE IF NOT EXISTS predictions (
-    id                SERIAL PRIMARY KEY,
-    image_path        TEXT,
-    categorie_predite VARCHAR(50) NOT NULL,
-    confiance         DECIMAL(5, 4),
-    date_prediction   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    image_name  TEXT NOT NULL,
+    waste_class TEXT NOT NULL,
+    confidence  REAL NOT NULL CHECK(confidence BETWEEN 0 AND 1),
+    created_at  TEXT DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Table 3 : Statistiques par catégorie
 CREATE TABLE IF NOT EXISTS statistiques_categories (
-    id                    SERIAL PRIMARY KEY,
-    categorie             VARCHAR(50) UNIQUE NOT NULL,
-    nombre_images         INTEGER    DEFAULT 0,
-    pourcentage           DECIMAL(5, 2),
-    derniere_mise_a_jour  TIMESTAMP  DEFAULT CURRENT_TIMESTAMP
+    id                    INTEGER PRIMARY KEY AUTOINCREMENT,
+    categorie             TEXT UNIQUE NOT NULL,
+    nombre_images         INTEGER DEFAULT 0,
+    pourcentage           REAL,
+    derniere_mise_a_jour  TEXT DEFAULT CURRENT_TIMESTAMP
 );
 
 -- ── Index pour accélérer les recherches ────────────────────
@@ -37,18 +39,18 @@ CREATE INDEX IF NOT EXISTS idx_dechets_categorie
     ON dechets (categorie);
 
 CREATE INDEX IF NOT EXISTS idx_predictions_categorie
-    ON predictions (categorie_predite);
+    ON predictions (waste_class);
 
 CREATE INDEX IF NOT EXISTS idx_predictions_date
-    ON predictions (date_prediction);
+    ON predictions (created_at);
 
 -- ── Données initiales : statistiques du dataset Kaggle ─────
 INSERT INTO statistiques_categories (categorie, nombre_images, pourcentage)
 VALUES
-    ('paper',     584, 24.96),
-    ('glass',     501, 21.43),
-    ('plastic',   472, 20.19),
-    ('metal',     410, 17.54),
-    ('cardboard', 403, 17.23),
-    ('trash',     137,  5.86)
+    ('paper',     594, 23.51),
+    ('glass',     501, 19.83),
+    ('plastic',   482, 19.07),
+    ('metal',     410, 16.22),
+    ('cardboard', 403, 15.95),
+    ('trash',     137,  5.42)
 ON CONFLICT (categorie) DO NOTHING;

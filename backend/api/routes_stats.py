@@ -3,6 +3,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy import func
 from backend.api.database import get_db
 from backend.api.models import Prediction
+from backend.api.config import settings
+from backend.api.monitoring import monitoring_registry
 
 router_stats = APIRouter(prefix="/stats", tags=["Statistiques"])
 
@@ -54,3 +56,31 @@ def get_stats_by_class(db: Session = Depends(get_db)):
         }
         for r in results
     ]
+
+
+@router_stats.get("/monitoring", tags=["Monitoring"])
+def get_monitoring(db: Session = Depends(get_db)):
+    """Expose les métriques applicatives et IA utiles au diagnostic du MVP."""
+    total_predictions = db.query(Prediction).count()
+    uncertain_predictions = db.query(Prediction).filter(
+        Prediction.confidence < settings.confidence_threshold
+    ).count()
+    uncertain_rate = (
+        uncertain_predictions / total_predictions if total_predictions else 0.0
+    )
+
+    return {
+        "application": monitoring_registry.snapshot(),
+        "model": {
+            "version": settings.model_version,
+            "confidence_threshold": settings.confidence_threshold,
+            "prediction_count": total_predictions,
+            "uncertain_prediction_count": uncertain_predictions,
+            "uncertain_prediction_rate": round(uncertain_rate, 4),
+        },
+        "alert_thresholds": {
+            "error_rate": 0.05,
+            "latency_ms": 2000,
+            "uncertain_prediction_rate": 0.20,
+        },
+    }

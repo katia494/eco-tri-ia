@@ -24,6 +24,16 @@ rendue visible par le backlog et les commits ; elle ne prétend pas simuler une 
 | P1 | Prouver C1-C21 | documents et liens vers les fichiers |
 | P2 | Fonctions secondaires | profil, chatbot et gamification réels |
 
+## Issues GitHub actives
+
+- [#2 — Nettoyer les doublons et préparer le modèle v2](https://github.com/katia494/eco-tri-ia/issues/2)
+- [#3 — Publier et valider la correction du parcours de scan](https://github.com/katia494/eco-tri-ia/issues/3)
+- [#4 — Constituer un jeu de test externe](https://github.com/katia494/eco-tri-ia/issues/4)
+- [#5 — Créer la release MVP v1.0.0](https://github.com/katia494/eco-tri-ia/issues/5)
+
+Les cases à cocher constituent la définition de fini. La vue Kanban GitHub sera
+utilisée pour répartir les issues entre « À faire », « En cours » et « Terminé ».
+
 ## Sprints de stabilisation
 
 ### Sprint 1 - Produit fonctionnel

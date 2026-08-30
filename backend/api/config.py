@@ -9,12 +9,14 @@ class Settings(BaseSettings):
     debug: bool = False
 
     # Base de données
-    database_url: str = "sqlite:///./eco_tri.db"
+    # Une base SQLite unique pour le MVP. Le fichier est généré localement et
+    # n'est pas versionné afin d'éviter de commiter l'historique des utilisateurs.
+    database_url: str = "sqlite:///./data/eco_tri.db"
 
     # Modèle IA
     model_path: str = "backend/models/best.pt"
-    model_version: str = "yolov8n-cls-v1"
-    confidence_threshold: float = 0.5
+    model_version: str = "yolov8n-cls-v2"
+    confidence_threshold: float = 0.60
     max_upload_bytes: int = 10 * 1024 * 1024
 
     # CORS

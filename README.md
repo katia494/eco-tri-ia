@@ -7,12 +7,16 @@ et une consigne de tri. L'image utilisateur n'est pas conservée.
 
 ## Résultats vérifiés
 
-- Dataset réel : 2 527 images, 6 catégories.
-- Split reproductible : 1 766 train, 377 validation, 384 test.
-- Accuracy sur le jeu de test jamais vu : **91,15 %**.
-- Macro F1-score sur le jeu de test : **90,47 %**.
-- Modèle : YOLOv8n-cls, 1,44 million de paramètres, fichier de 2,9 Mo.
-- Tests backend : 21 tests, 85 % de couverture mesurée.
+- Dataset brut réel : 2 527 images, 6 catégories.
+- Audit qualité : 2 527 images lisibles et 3 copies mal étiquetées exclues du pipeline v2.
+- Pipeline v2 : 2 524 images uniques, réparties en 1 764 train, 377 validation et 383 test.
+- Métriques v2 : **91,64 %** d'accuracy et **90,48 %** de macro F1 sur le jeu de test.
+- Modèle : YOLOv8n-cls, 1,44 million de paramètres, fichier d'environ 3 Mo.
+- Qualité logicielle : 28 tests backend, 86 % de couverture et 3 tests métier frontend.
+
+Les trois copies contradictoires détectées par SHA-256 ont été exclues avant le
+split déterministe (graine 42), l'entraînement et l'évaluation du modèle v2. Les
+résultats historiques du modèle v1 restent disponibles dans `reports/model-v1`.
 
 Les métriques détaillées et la matrice de confusion sont disponibles dans
 [`reports/model`](reports/model).
@@ -31,7 +35,9 @@ Utilisateur -> React/Vite -> FastAPI -> YOLOv8n-cls
 - validation du type, du contenu et de la taille (10 Mo maximum) ;
 - classification en `cardboard`, `glass`, `metal`, `paper`, `plastic`, `trash` ;
 - score de confiance et consigne de tri ;
+- signalement explicite des prédictions sous 60 % de confiance ;
 - historique et statistiques des prédictions ;
+- métriques applicatives et IA sur `/stats/monitoring` ;
 - documentation OpenAPI sur `/docs` ;
 - tests automatisés backend, lint et build frontend dans GitHub Actions.
 
@@ -72,6 +78,7 @@ Ouvrir `http://localhost:5173` et la documentation API sur
 pytest tests/ -v --cov=backend --cov-report=term-missing
 cd frontend
 npm run lint
+npm test
 npm run build
 ```
 
@@ -80,13 +87,15 @@ npm run build
 ```bash
 pip install -r requirements-data.txt
 python scripts/download_dataset.py
-python scripts/prepare_classification_dataset.py
-python scripts/train_yolo_classification.py --epochs 20 --batch 64
-python scripts/evaluate_model.py
+python scripts/audit_dataset.py --fail-on-invalid
+python scripts/prepare_classification_dataset.py --destination data/classification/v2
+python scripts/train_yolo_classification.py --data data/classification/v2 --epochs 20 --batch 32 --device cpu --workers 0
+python scripts/evaluate_model.py --model runs/classify/runs/classify/eco_tri_yolov8n_cls/weights/best.pt --test-dir data/classification/v2/test --output-dir reports/model
 ```
 
-Le split est déterministe avec la graine 42. Le modèle final doit être copié
-dans `backend/models/best.pt`.
+Le split est déterministe avec la graine 42 et exclut les fichiers listés dans
+`data/quality_exclusions.json`. Le modèle final doit être copié dans
+`backend/models/best.pt` après l'évaluation du jeu de test.
 
 ## API
 
@@ -99,6 +108,7 @@ dans `backend/models/best.pt`.
 | GET | `/predictions/{id}` | Prédiction par identifiant |
 | GET | `/stats/` | Statistiques globales |
 | GET | `/stats/by-class` | Statistiques par classe |
+| GET | `/stats/monitoring` | Erreurs, latences et incertitudes |
 
 ## Docker
 

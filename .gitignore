@@ -61,6 +61,11 @@ local_settings.py
 db.sqlite3
 db.sqlite3-journal
 
+# Bases SQLite locales générées par l'API et les tests
+/eco_tri.db
+/test.db
+/data/eco_tri.db
+
 # Flask stuff:
 instance/
 .webassets-cache

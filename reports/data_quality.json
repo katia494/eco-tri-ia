@@ -1,0 +1,53 @@
+{
+  "generated_at": "2026-08-30T10:33:13.097788+00:00",
+  "source": "data\\raw\\Garbage classification\\Garbage classification",
+  "classes_expected": [
+    "cardboard",
+    "glass",
+    "metal",
+    "paper",
+    "plastic",
+    "trash"
+  ],
+  "counts_by_class": {
+    "cardboard": 403,
+    "glass": 501,
+    "metal": 410,
+    "paper": 594,
+    "plastic": 482,
+    "trash": 137
+  },
+  "total_discovered": 2527,
+  "valid_images": 2527,
+  "invalid_images": 0,
+  "invalid_files": [],
+  "unexpected_files": [],
+  "duplicate_files": 3,
+  "duplicate_groups": [
+    [
+      "data\\raw\\Garbage classification\\Garbage classification\\glass\\glass115.jpg",
+      "data\\raw\\Garbage classification\\Garbage classification\\metal\\metal91.jpg"
+    ],
+    [
+      "data\\raw\\Garbage classification\\Garbage classification\\glass\\glass176.jpg",
+      "data\\raw\\Garbage classification\\Garbage classification\\plastic\\plastic152.jpg"
+    ],
+    [
+      "data\\raw\\Garbage classification\\Garbage classification\\glass\\glass389.jpg",
+      "data\\raw\\Garbage classification\\Garbage classification\\plastic\\plastic332.jpg"
+    ]
+  ],
+  "formats": {
+    "JPEG": 2527
+  },
+  "modes": {
+    "RGB": 2527
+  },
+  "dimensions": {
+    "min_width": 512,
+    "max_width": 512,
+    "min_height": 384,
+    "max_height": 384
+  },
+  "usable_images": 2524
+}
