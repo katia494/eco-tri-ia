@@ -24,35 +24,12 @@ TRADUCTION = {
 
 
 def creer_tables(conn: sqlite3.Connection) -> None:
-    cur = conn.cursor()
-    cur.executescript("""
-        CREATE TABLE IF NOT EXISTS dechets (
-            id           INTEGER PRIMARY KEY AUTOINCREMENT,
-            nom_fichier  TEXT NOT NULL,
-            categorie    TEXT NOT NULL,
-            chemin_image TEXT,
-            source       TEXT DEFAULT 'Kaggle-GarbageClassification',
-            date_ajout   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        );
-
-        CREATE TABLE IF NOT EXISTS predictions (
-            id                INTEGER PRIMARY KEY AUTOINCREMENT,
-            image_path        TEXT,
-            categorie_predite TEXT NOT NULL,
-            confiance         REAL,
-            date_prediction   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        );
-
-        CREATE TABLE IF NOT EXISTS statistiques_categories (
-            id                   INTEGER PRIMARY KEY AUTOINCREMENT,
-            categorie            TEXT UNIQUE NOT NULL,
-            nombre_images        INTEGER DEFAULT 0,
-            pourcentage          REAL,
-            derniere_mise_a_jour TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        );
-    """)
+    schema_path = Path("sql/schema.sql")
+    if not schema_path.exists():
+        raise FileNotFoundError(f"Schéma SQL introuvable : {schema_path}")
+    conn.executescript(schema_path.read_text(encoding="utf-8"))
     conn.commit()
-    print("  ✅ Tables créées (ou déjà existantes)")
+    print(f"  ✅ Schéma SQLite appliqué depuis {schema_path}")
 
 
 def importer_images(conn: sqlite3.Connection) -> int:
@@ -66,7 +43,7 @@ def importer_images(conn: sqlite3.Connection) -> int:
             print(f"    ⚠️  Dossier manquant : {cat}")
             continue
 
-        fichiers = list(dossier.glob("*.jpg"))
+        fichiers = sorted(dossier.glob("*.jpg"))
         nb = len(fichiers)
 
         cur.executemany(
@@ -74,13 +51,28 @@ def importer_images(conn: sqlite3.Connection) -> int:
             [(f.name, cat, str(f)) for f in fichiers],
         )
 
-        cur.execute(
-            "INSERT OR REPLACE INTO statistiques_categories (categorie, nombre_images, derniere_mise_a_jour) VALUES (?, ?, ?)",
-            (cat, nb, datetime.now()),
-        )
-
         total += nb
         print(f"    ✅ {TRADUCTION[cat]:12s} : {nb:4d} images")
+
+    for cat in CATEGORIES:
+        cur.execute(
+            "SELECT COUNT(*) FROM dechets WHERE categorie = ?",
+            (cat,),
+        )
+        count = cur.fetchone()[0]
+        percentage = round(count * 100 / total, 2) if total else 0.0
+        cur.execute(
+            """
+            INSERT INTO statistiques_categories
+                (categorie, nombre_images, pourcentage, derniere_mise_a_jour)
+            VALUES (?, ?, ?, ?)
+            ON CONFLICT(categorie) DO UPDATE SET
+                nombre_images = excluded.nombre_images,
+                pourcentage = excluded.pourcentage,
+                derniere_mise_a_jour = excluded.derniere_mise_a_jour
+            """,
+            (cat, count, percentage, datetime.now().isoformat()),
+        )
 
     conn.commit()
     return total

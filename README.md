@@ -7,12 +7,16 @@ et une consigne de tri. L'image utilisateur n'est pas conservée.
 
 ## Résultats vérifiés
 
-- Dataset réel : 2 527 images, 6 catégories.
-- Split reproductible : 1 766 train, 377 validation, 384 test.
-- Accuracy sur le jeu de test jamais vu : **91,15 %**.
-- Macro F1-score sur le jeu de test : **90,47 %**.
+- Dataset brut réel : 2 527 images, 6 catégories.
+- Audit qualité : 2 527 images lisibles et 3 copies mal étiquetées exclues du pipeline v2.
+- Modèle v1 : split de 1 766 train, 377 validation et 384 test.
+- Métriques v1 : **91,15 %** d'accuracy et **90,47 %** de macro F1.
 - Modèle : YOLOv8n-cls, 1,44 million de paramètres, fichier de 2,9 Mo.
-- Tests backend : 21 tests, 85 % de couverture mesurée.
+- Qualité logicielle : 28 tests backend, 86 % de couverture et 3 tests métier frontend.
+
+Les métriques v1 ont été obtenues avant l'exclusion des trois copies
+contradictoires. Le pipeline v2 utilise 2 524 images uniques ; ses métriques
+devront remplacer celles de v1 après le réentraînement suivi dans l'issue #2.
 
 Les métriques détaillées et la matrice de confusion sont disponibles dans
 [`reports/model`](reports/model).
@@ -33,6 +37,7 @@ Utilisateur -> React/Vite -> FastAPI -> YOLOv8n-cls
 - score de confiance et consigne de tri ;
 - signalement explicite des prédictions sous 60 % de confiance ;
 - historique et statistiques des prédictions ;
+- métriques applicatives et IA sur `/stats/monitoring` ;
 - documentation OpenAPI sur `/docs` ;
 - tests automatisés backend, lint et build frontend dans GitHub Actions.
 
@@ -73,6 +78,7 @@ Ouvrir `http://localhost:5173` et la documentation API sur
 pytest tests/ -v --cov=backend --cov-report=term-missing
 cd frontend
 npm run lint
+npm test
 npm run build
 ```
 
@@ -100,6 +106,7 @@ dans `backend/models/best.pt`.
 | GET | `/predictions/{id}` | Prédiction par identifiant |
 | GET | `/stats/` | Statistiques globales |
 | GET | `/stats/by-class` | Statistiques par classe |
+| GET | `/stats/monitoring` | Erreurs, latences et incertitudes |
 
 ## Docker
 

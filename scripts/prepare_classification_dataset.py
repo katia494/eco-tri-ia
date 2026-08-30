@@ -13,6 +13,14 @@ CLASSES = ("cardboard", "glass", "metal", "paper", "plastic", "trash")
 IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png"}
 
 
+def load_exclusions(path: Path | None) -> set[str]:
+    """Charge les chemins relatifs exclus après l'audit qualité."""
+    if path is None or not path.exists():
+        return set()
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    return {str(item["path"]).replace("\\", "/") for item in payload["files"]}
+
+
 def split_items(items: list[Path], seed: int) -> dict[str, list[Path]]:
     """Découpe une classe en 70 % train, 15 % val et 15 % test."""
     shuffled = items.copy()
@@ -26,14 +34,21 @@ def split_items(items: list[Path], seed: int) -> dict[str, list[Path]]:
     }
 
 
-def prepare(source: Path, destination: Path, seed: int = 42) -> dict:
+def prepare(
+    source: Path,
+    destination: Path,
+    seed: int = 42,
+    exclusions_path: Path | None = Path("data/quality_exclusions.json"),
+) -> dict:
     """Crée les dossiers attendus par Ultralytics sans modifier les sources."""
     if not source.is_dir():
         raise FileNotFoundError(f"Dataset source introuvable : {source}")
 
+    exclusions = load_exclusions(exclusions_path)
     manifest: dict[str, object] = {
         "seed": seed,
         "ratios": {"train": 0.70, "val": 0.15, "test": 0.15},
+        "excluded_files": sorted(exclusions),
         "classes": {},
     }
 
@@ -43,6 +58,7 @@ def prepare(source: Path, destination: Path, seed: int = 42) -> dict:
             path
             for path in class_dir.iterdir()
             if path.is_file() and path.suffix.lower() in IMAGE_SUFFIXES
+            and f"{class_name}/{path.name}" not in exclusions
         )
         if not images:
             raise ValueError(f"Aucune image trouvée pour la classe {class_name}")
@@ -79,8 +95,18 @@ def main() -> None:
         "--destination", type=Path, default=Path("data/classification")
     )
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument(
+        "--exclusions",
+        type=Path,
+        default=Path("data/quality_exclusions.json"),
+    )
     args = parser.parse_args()
-    manifest = prepare(args.source, args.destination, args.seed)
+    manifest = prepare(
+        args.source,
+        args.destination,
+        args.seed,
+        exclusions_path=args.exclusions,
+    )
     print(json.dumps(manifest, indent=2, ensure_ascii=False))
 
 

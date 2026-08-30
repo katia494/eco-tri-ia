@@ -22,10 +22,16 @@ Le middleware journalise méthode, route, statut et durée. SQLite permet de cal
 le nombre de prédictions, la confiance moyenne et la répartition des classes.
 L'image source n'est pas enregistrée.
 
+La route `/stats/monitoring` agrège pour le processus courant : nombre de
+requêtes, taux d'erreur, latence moyenne/maximale, statuts HTTP, endpoints
+appelés, nombre de prédictions incertaines et seuils d'alerte. Les compteurs
+applicatifs sont réinitialisés au redémarrage ; SQLite conserve les métadonnées
+de prédiction.
+
 ## Procédure
 
 1. Appeler `/health` régulièrement.
-2. Consulter `/stats/` et `/stats/by-class`.
+2. Consulter `/stats/`, `/stats/by-class` et `/stats/monitoring`.
 3. Chercher les erreurs et latences anormales dans les logs.
 4. Rejouer un test contrôlé.
 5. Documenter tout incident et ajouter un test de non-régression.

@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
+import { mapApiToUI } from './scanResult';
 import {
     Leaf, ScanLine, LayoutDashboard, Trophy, BookOpen,
     Coffee, Settings, MapPin, Package, BarChart3,
@@ -87,29 +88,6 @@ function CameraZone({ aiResult: defaultResult, onPrediction }) {
     const [cameraError, setCameraError] = useState(null);
     const [showResult, setShowResult] = useState(false);
     const [currentResult, setCurrentResult] = useState(defaultResult);
-
-    const mapApiToUI = (data) => {
-        const binMap = {
-            plastic:   { bin: 'BAC JAUNE',  binColor: 'bg-yellow-400 text-yellow-900 border-yellow-500' },
-            glass:     { bin: 'BAC VERT',   binColor: 'bg-green-500 text-white border-green-600' },
-            paper:     { bin: 'BAC BLEU',   binColor: 'bg-blue-500 text-white border-blue-600' },
-            cardboard: { bin: 'BAC BLEU',   binColor: 'bg-blue-500 text-white border-blue-600' },
-            metal:     { bin: 'BAC JAUNE',  binColor: 'bg-yellow-400 text-yellow-900 border-yellow-500' },
-            trash:     { bin: 'ORDURES MÉNAGÈRES', binColor: 'bg-gray-500 text-white border-gray-600' },
-        };
-        const label = data.waste_class || data.label || data.class_name || 'Objet inconnu';
-        const confidence = Math.round((data.confidence || 0.5) * 100);
-        const cat = Object.keys(binMap).find(k => label.toLowerCase().includes(k));
-        const { bin, binColor } = binMap[cat] ?? { bin: 'ORDURES MÉNAGÈRES', binColor: 'bg-gray-500 text-white border-gray-600' };
-        return {
-            label,
-            confidence,
-            instruction: data.sorting_instruction || data.message,
-            bin,
-            binColor,
-            isUncertain: data.is_uncertain ?? confidence < 60,
-        };
-    };
 
     const requestPrediction = async (blob, filename) => {
             const body = new FormData();

@@ -8,7 +8,7 @@ consigne, sans conserver l'image.
 
 ## Données
 
-Le dataset Garbage Classification contient 2 527 images réparties entre carton,
+Le dataset Garbage Classification contient 2 527 images brutes réparties entre carton,
 verre, métal, papier, plastique et déchet non recyclable. Un script déterministe
 réalise un split 70/15/15 avec la graine 42.
 
@@ -18,8 +18,10 @@ Le modèle final est YOLOv8n-cls préentraîné puis adapté aux six classes. La
 classification a été choisie car une seule étiquette est attendue par image et le
 dataset ne possède pas de bounding boxes.
 
-Résultat sur 384 images de test jamais vues : **91,15 % d'accuracy** et
-**90,47 % de macro F1**. Les résultats détaillés sont versionnés dans
+Le modèle v1 atteint sur 384 images de test **91,15 % d'accuracy** et
+**90,47 % de macro F1**. Un audit SHA-256 ultérieur a détecté trois copies
+mal étiquetées entre classes. Le pipeline v2 les exclut et retient 2 524 images ;
+le modèle devra être réentraîné avant d'attribuer ces métriques à la v2. Les résultats v1 sont versionnés dans
 `reports/model`.
 
 ## Application
@@ -29,7 +31,8 @@ Résultat sur 384 images de test jamais vues : **91,15 % d'accuracy** et
 - SQLAlchemy/SQLite stocke uniquement les métadonnées ;
 - les fichiers sont validés par MIME, contenu et taille ;
 - un middleware journalise statut et durée ;
-- 21 tests backend passent avec 85 % de couverture ;
+- 28 tests backend passent avec 86 % de couverture ;
+- 3 tests métier frontend, le lint et le build passent ;
 - ESLint et le build Vite passent localement.
 
 ## Livraison
