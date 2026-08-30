@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-08-30T09:59:31.752739+00:00",
-  "source": "data/raw/Garbage classification/Garbage classification",
+  "generated_at": "2026-08-30T10:33:13.097788+00:00",
+  "source": "data\\raw\\Garbage classification\\Garbage classification",
   "classes_expected": [
     "cardboard",
     "glass",
@@ -25,16 +25,16 @@
   "duplicate_files": 3,
   "duplicate_groups": [
     [
-      "data/raw/Garbage classification/Garbage classification/glass/glass115.jpg",
-      "data/raw/Garbage classification/Garbage classification/metal/metal91.jpg"
+      "data\\raw\\Garbage classification\\Garbage classification\\glass\\glass115.jpg",
+      "data\\raw\\Garbage classification\\Garbage classification\\metal\\metal91.jpg"
     ],
     [
-      "data/raw/Garbage classification/Garbage classification/glass/glass176.jpg",
-      "data/raw/Garbage classification/Garbage classification/plastic/plastic152.jpg"
+      "data\\raw\\Garbage classification\\Garbage classification\\glass\\glass176.jpg",
+      "data\\raw\\Garbage classification\\Garbage classification\\plastic\\plastic152.jpg"
     ],
     [
-      "data/raw/Garbage classification/Garbage classification/glass/glass389.jpg",
-      "data/raw/Garbage classification/Garbage classification/plastic/plastic332.jpg"
+      "data\\raw\\Garbage classification\\Garbage classification\\glass\\glass389.jpg",
+      "data\\raw\\Garbage classification\\Garbage classification\\plastic\\plastic332.jpg"
     ]
   ],
   "formats": {
