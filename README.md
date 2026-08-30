@@ -9,14 +9,14 @@ et une consigne de tri. L'image utilisateur n'est pas conservée.
 
 - Dataset brut réel : 2 527 images, 6 catégories.
 - Audit qualité : 2 527 images lisibles et 3 copies mal étiquetées exclues du pipeline v2.
-- Modèle v1 : split de 1 766 train, 377 validation et 384 test.
-- Métriques v1 : **91,15 %** d'accuracy et **90,47 %** de macro F1.
-- Modèle : YOLOv8n-cls, 1,44 million de paramètres, fichier de 2,9 Mo.
+- Pipeline v2 : 2 524 images uniques, réparties en 1 764 train, 377 validation et 383 test.
+- Métriques v2 : **91,64 %** d'accuracy et **90,48 %** de macro F1 sur le jeu de test.
+- Modèle : YOLOv8n-cls, 1,44 million de paramètres, fichier d'environ 3 Mo.
 - Qualité logicielle : 28 tests backend, 86 % de couverture et 3 tests métier frontend.
 
-Les métriques v1 ont été obtenues avant l'exclusion des trois copies
-contradictoires. Le pipeline v2 utilise 2 524 images uniques ; ses métriques
-devront remplacer celles de v1 après le réentraînement suivi dans l'issue #2.
+Les trois copies contradictoires détectées par SHA-256 ont été exclues avant le
+split déterministe (graine 42), l'entraînement et l'évaluation du modèle v2. Les
+résultats historiques du modèle v1 restent disponibles dans `reports/model-v1`.
 
 Les métriques détaillées et la matrice de confusion sont disponibles dans
 [`reports/model`](reports/model).
@@ -87,13 +87,15 @@ npm run build
 ```bash
 pip install -r requirements-data.txt
 python scripts/download_dataset.py
-python scripts/prepare_classification_dataset.py
-python scripts/train_yolo_classification.py --epochs 20 --batch 64
-python scripts/evaluate_model.py
+python scripts/audit_dataset.py --fail-on-invalid
+python scripts/prepare_classification_dataset.py --destination data/classification/v2
+python scripts/train_yolo_classification.py --data data/classification/v2 --epochs 20 --batch 32 --device cpu --workers 0
+python scripts/evaluate_model.py --model runs/classify/runs/classify/eco_tri_yolov8n_cls/weights/best.pt --test-dir data/classification/v2/test --output-dir reports/model
 ```
 
-Le split est déterministe avec la graine 42. Le modèle final doit être copié
-dans `backend/models/best.pt`.
+Le split est déterministe avec la graine 42 et exclut les fichiers listés dans
+`data/quality_exclusions.json`. Le modèle final doit être copié dans
+`backend/models/best.pt` après l'évaluation du jeu de test.
 
 ## API
 

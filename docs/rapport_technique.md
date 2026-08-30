@@ -18,11 +18,11 @@ Le modèle final est YOLOv8n-cls préentraîné puis adapté aux six classes. La
 classification a été choisie car une seule étiquette est attendue par image et le
 dataset ne possède pas de bounding boxes.
 
-Le modèle v1 atteint sur 384 images de test **91,15 % d'accuracy** et
-**90,47 % de macro F1**. Un audit SHA-256 ultérieur a détecté trois copies
-mal étiquetées entre classes. Le pipeline v2 les exclut et retient 2 524 images ;
-le modèle devra être réentraîné avant d'attribuer ces métriques à la v2. Les résultats v1 sont versionnés dans
-`reports/model`.
+Un audit SHA-256 a détecté trois copies mal étiquetées entre classes. Le pipeline
+v2 les exclut et retient 2 524 images. Après réentraînement, le modèle v2 atteint
+sur 383 images de test **91,64 % d'accuracy** et **90,48 % de macro F1**.
+Les résultats v2 sont versionnés dans `reports/model` et les résultats historiques
+v1 dans `reports/model-v1`.
 
 ## Application
 

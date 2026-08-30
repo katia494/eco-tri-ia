@@ -14,7 +14,7 @@
 | C10 | `frontend/src/Scan/Scan.jsx`, build React | Couvert |
 | C11 | rapports modèle, seuil d'incertitude, `/stats/monitoring` | Technique couverte ; jeu externe et capture à finaliser |
 | C12 | 28 tests backend, 3 tests frontend | Couvert localement |
-| C13 | `.github/workflows/ci.yml` | Première PR verte ; nouvelle branche à publier et revérifier |
+| C13 | `.github/workflows/ci.yml` | Branche publiée ; exécution GitHub Actions à revérifier avant fusion |
 | C14 | `docs/user_stories.md` | Couvert |
 | C15 | `docs/technical_specifications.md` | Couvert |
 | C16 | backlog, sprints, issues GitHub #2 à #5 | Presque couvert ; organiser la vue Kanban |

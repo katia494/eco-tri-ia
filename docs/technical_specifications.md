@@ -37,7 +37,7 @@ Sortie :
 {
   "waste_class": "plastic",
   "confidence": 0.91,
-  "model": "yolov8n-cls-v1",
+  "model": "yolov8n-cls-v2",
   "image_name": "bouteille.jpg",
   "sorting_instruction": "Videz l'emballage...",
   "message": "Déchet classifié comme plastic avec 91.0 % de confiance.",

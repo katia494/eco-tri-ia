@@ -40,7 +40,7 @@ def test_predict_with_image():
         mock_predict.return_value = {
             "waste_class": "plastic",
             "confidence": 0.92,
-            "model": "yolov8n-cls-v1",
+            "model": "yolov8n-cls-v2",
             "image_name": "test.jpg",
             "message": "Déchet classifié : plastic",
             "sorting_instruction": "Déposez-le dans le bac de tri.",

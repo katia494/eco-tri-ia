@@ -36,7 +36,7 @@ def test_stats_after_prediction():
         mock_predict.return_value = {
             "waste_class": "glass",
             "confidence": 0.88,
-            "model": "yolov8n-cls-v1",
+            "model": "yolov8n-cls-v2",
             "image_name": "test.jpg",
             "message": "Déchet classifié : glass",
             "sorting_instruction": "Conteneur à verre.",

@@ -37,7 +37,8 @@ Random Forest et XGBoost.
 - 28 tests backend et 3 tests métier frontend passent ;
 - le frontend passe lint et build ;
 - une prédiction réelle a été exécutée avec `best.pt` ;
-- l'évaluation séparée atteint 91,15 % sur 384 images de test.
+- l'évaluation v1 séparée atteint 91,15 % sur 384 images de test ;
+- après audit des doublons, la v2 atteint 91,64 % sur 383 images de test.
 
 ## Prévention
 

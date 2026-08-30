@@ -37,16 +37,17 @@ MVP. Seul YOLOv8n-cls a été entraîné et mesuré dans ce projet.
 
 ## Résultat du modèle retenu
 
-- entraînement : 1 766 images ;
+- entraînement : 1 764 images ;
 - validation : 377 images ;
-- test indépendant : 384 images ;
-- accuracy test : **91,15 %** ;
-- macro F1 test : **90,47 %** ;
-- meilleur entraînement : époque 12 avec arrêt anticipé ;
-- taille du modèle : environ 2,9 Mo.
+- test indépendant : 383 images ;
+- accuracy test : **91,64 %** ;
+- macro F1 test : **90,48 %** ;
+- meilleur entraînement : époque 8 ; arrêt anticipé après 15 époques ;
+- taille du modèle : environ 3 Mo.
 
-Les métriques par classe et la matrice de confusion se trouvent dans
-`reports/model`. Le score de validation n'est pas présenté comme score final :
+Les métriques v2 par classe, la matrice de confusion et le manifeste du split se
+trouvent dans `reports/model`. Les résultats v1 sont archivés dans
+`reports/model-v1`. Le score de validation n'est pas présenté comme score final :
 seul le jeu de test indépendant sert à annoncer la performance finale.
 
 ## Justification

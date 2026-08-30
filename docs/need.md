@@ -40,7 +40,8 @@ en prenant une photo et en recevant instantanément la catégorie du déchet.
 - six catégories présentes dans l'évaluation ;
 - parcours principal utilisable sur mobile.
 
-Le modèle v1 atteint **91,15 % d'accuracy** et **90,47 % de macro F1** sur
-384 images. Ces métriques précèdent l'exclusion de trois copies contradictoires
-et devront être recalculées pour la v2. Le temps à froid mesuré localement est de 1,93 seconde ;
-une mesure à chaud et une capture restent à joindre aux preuves de soutenance.
+Le modèle v2 atteint **91,64 % d'accuracy** et **90,48 % de macro F1** sur
+383 images de test indépendantes. Il a été entraîné après l'exclusion de trois
+copies contradictoires détectées lors de l'audit qualité. Le temps à froid mesuré
+localement est de 1,93 seconde ; une mesure à chaud et une capture restent à
+joindre aux preuves de soutenance.
