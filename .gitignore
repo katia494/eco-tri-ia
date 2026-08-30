@@ -230,4 +230,5 @@ frontend/.env.local
 
 # Artefacts locaux du pipeline IA
 data/classification/
+/data/external_test/
 runs/
