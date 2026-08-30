@@ -39,7 +39,8 @@ def test_stats_after_prediction():
             "model": "yolov8n-cls-v1",
             "image_name": "test.jpg",
             "message": "Déchet classifié : glass",
-            "sorting_instruction": "Conteneur à verre."
+            "sorting_instruction": "Conteneur à verre.",
+            "is_uncertain": False,
         }
         client.post(
             "/predict",

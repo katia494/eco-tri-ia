@@ -3,9 +3,9 @@ import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import {
     Leaf, ScanLine, LayoutDashboard, Trophy, BookOpen,
-    Coffee, Settings, MapPin, Sprout, Package, CloudSnow,
-    Lightbulb, Sparkles, BatteryWarning, Store, Building,
-    Map, Trash2, CheckCircle, XCircle, Camera, CameraOff, ChevronRight, MessageCircle, Upload
+    Coffee, Settings, MapPin, Package, BarChart3,
+    Lightbulb, Sparkles, BatteryWarning, Store,
+    Map, Trash2, Camera, CameraOff, MessageCircle, Upload
 } from 'lucide-react';
 
 const styles = `
@@ -23,7 +23,7 @@ const INITIAL_RESULT = {
     instruction: '',
     bin: '',
     binColor: 'bg-gray-500 text-white border-gray-600',
-    points: 0,
+    isUncertain: false,
 };
 
 function Sidebar() {
@@ -79,7 +79,7 @@ function Sidebar() {
     );
 }
 
-function CameraZone({ aiResult: defaultResult, onConfirm, onCorrect }) {
+function CameraZone({ aiResult: defaultResult, onPrediction }) {
     const videoRef = useRef(null);
     const streamRef = useRef(null);
     const fileInputRef = useRef(null);
@@ -101,7 +101,14 @@ function CameraZone({ aiResult: defaultResult, onConfirm, onCorrect }) {
         const confidence = Math.round((data.confidence || 0.5) * 100);
         const cat = Object.keys(binMap).find(k => label.toLowerCase().includes(k));
         const { bin, binColor } = binMap[cat] ?? { bin: 'ORDURES MÉNAGÈRES', binColor: 'bg-gray-500 text-white border-gray-600' };
-        return { label, confidence, instruction: data.sorting_instruction || data.message, bin, binColor, points: data.points ?? 10 };
+        return {
+            label,
+            confidence,
+            instruction: data.sorting_instruction || data.message,
+            bin,
+            binColor,
+            isUncertain: data.is_uncertain ?? confidence < 60,
+        };
     };
 
     const requestPrediction = async (blob, filename) => {
@@ -138,6 +145,7 @@ function CameraZone({ aiResult: defaultResult, onConfirm, onCorrect }) {
             const result = await requestPrediction(file, file.name);
             setCurrentResult(result);
             setShowResult(true);
+            onPrediction();
         } catch (error) {
             setCameraError(`L'analyse a échoué : ${error.message}`);
         } finally {
@@ -163,6 +171,7 @@ function CameraZone({ aiResult: defaultResult, onConfirm, onCorrect }) {
                     const result = await detectFromCamera();
                     setCurrentResult(result);
                     setShowResult(true);
+                    onPrediction();
                 } catch (error) {
                     console.error('[ECO-TRI] Échec de la prédiction :', error);
                     setCameraError("L'analyse a échoué. Vérifiez que l'API est démarrée puis réessayez.");
@@ -181,6 +190,11 @@ function CameraZone({ aiResult: defaultResult, onConfirm, onCorrect }) {
         setCameraActive(false);
         setShowResult(false);
         setCurrentResult(defaultResult);
+    };
+
+    const startNewAnalysis = () => {
+        stopCamera();
+        setCameraError(null);
     };
 
     useEffect(() => () => streamRef.current?.getTracks().forEach(t => t.stop()), []);
@@ -228,24 +242,26 @@ function CameraZone({ aiResult: defaultResult, onConfirm, onCorrect }) {
                 <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 w-11/12 max-w-md bg-white/95 backdrop-blur-sm p-4 rounded-xl shadow-2xl border border-gray-200">
                     <div className="flex items-start justify-between">
                         <div>
-                            <p className="text-xs font-bold text-gray-500 uppercase">Détection IA : {currentResult.confidence}%</p>
+                            <p className="text-xs font-bold text-gray-500 uppercase">Résultat IA : {currentResult.confidence}%</p>
                             <h3 className="text-xl font-black text-gray-800 mt-1">{currentResult.label}</h3>
-                            <p className="text-sm text-gray-600 mt-1">Consigne : {currentResult.instruction}</p>
+                            <p className={`text-sm mt-1 ${currentResult.isUncertain ? 'text-amber-700 font-medium' : 'text-gray-600'}`}>
+                                {currentResult.isUncertain ? 'Vérification recommandée : ' : 'Consigne : '}
+                                {currentResult.instruction}
+                            </p>
                         </div>
-                        <div className={`${currentResult.binColor} px-4 py-2 rounded-lg font-bold shadow-sm border flex flex-col items-center`}>
+                        <div className={`${currentResult.binColor} px-4 py-2 rounded-lg font-bold shadow-sm border flex flex-col items-center ${currentResult.isUncertain ? 'opacity-50' : ''}`}>
                             <Trash2 className="w-6 h-6 mb-1" />{currentResult.bin}
                         </div>
                     </div>
                     <div className="mt-4 pt-3 border-t border-gray-200">
-                        <p className="text-xs text-gray-500 mb-2 font-medium">L'IA hésite un peu. Confirmez-vous cet objet ?</p>
-                        <div className="flex space-x-2">
-                            <button onClick={onConfirm} className="flex-1 flex items-center justify-center space-x-1 bg-ecoGreen text-white py-2 rounded-lg font-medium text-sm hover:bg-green-700 transition shadow-sm">
-                                <CheckCircle className="w-4 h-4" /><span>Oui, c'est ça ! (+{currentResult.points} pts)</span>
-                            </button>
-                            <button onClick={onCorrect} className="flex-1 flex items-center justify-center space-x-1 bg-gray-200 text-gray-700 py-2 rounded-lg font-medium text-sm hover:bg-gray-300 transition shadow-sm">
-                                <XCircle className="w-4 h-4" /><span>Non, corriger</span>
-                            </button>
-                        </div>
+                        <p className="text-xs text-gray-500 mb-2 font-medium">
+                            {currentResult.isUncertain
+                                ? "La confiance est insuffisante : ne suivez pas cette proposition sans vérification."
+                                : "Vérifiez l'objet et relancez une analyse si nécessaire."}
+                        </p>
+                        <button onClick={startNewAnalysis} className="w-full flex items-center justify-center space-x-1 bg-ecoGreen text-white py-2 rounded-lg font-medium text-sm hover:bg-green-700 transition shadow-sm">
+                            <ScanLine className="w-4 h-4" /><span>Analyser une autre image</span>
+                        </button>
                     </div>
                 </div>
             )}
@@ -260,8 +276,7 @@ function CameraZone({ aiResult: defaultResult, onConfirm, onCorrect }) {
 }
 
 export default function Scan() {
-    const [points, setPoints] = useState(450);
-    const [dechets, setDechets] = useState(142);
+    const [stats, setStats] = useState(null);
     const [locationLabel, setLocationLabel] = useState(null);
     const [locationError, setLocationError] = useState(() => !navigator.geolocation);
 
@@ -286,8 +301,17 @@ export default function Scan() {
         );
     }, []);
 
-    const handleConfirm = () => { setPoints(p => p + 10); setDechets(d => d + 1); };
-    const handleCorrect = () => alert('Fonctionnalité de correction à venir !');
+    const refreshStats = async () => {
+        try {
+            const response = await fetch('/stats/');
+            if (!response.ok) throw new Error('Statistiques indisponibles');
+            setStats(await response.json());
+        } catch {
+            setStats(null);
+        }
+    };
+
+    useEffect(() => { refreshStats(); }, []);
 
     const { darkMode } = useTheme();
     const pageBg = darkMode ? 'bg-gray-950 text-gray-100' : 'bg-ecoLight text-gray-800';
@@ -297,7 +321,6 @@ export default function Scan() {
     const cardBg = darkMode ? 'bg-gray-900 border-gray-700' : 'bg-white border-gray-100';
     const cardTxt = darkMode ? 'text-gray-100' : 'text-gray-800';
     const cardSub = darkMode ? 'text-gray-400' : 'text-gray-500';
-    const rowBg = darkMode ? 'bg-gray-800' : 'bg-gray-50';
     const mapBtn = darkMode ? 'border-gray-700 text-gray-300 hover:bg-gray-800' : 'border-gray-200 text-gray-600 hover:bg-gray-50';
 
     return (
@@ -324,34 +347,27 @@ export default function Scan() {
                                 )}
                             </p>
                         </div>
-                        <div className="flex items-center space-x-4">
-                            <div className="text-right">
-                                <p className={`text-xs ${subTxt} uppercase font-bold tracking-wider`}>Niveau Actuel</p>
-                                <p className="text-ecoGreen font-bold flex items-center justify-end">
-                                    <Sprout className="w-4 h-4 mr-1" /> Apprenti Recycleur
-                                </p>
-                            </div>
-                            <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center border-2 border-yellow-400">
-                                <span className="font-bold text-yellow-600">{points}</span>
-                            </div>
+                        <div className="text-right">
+                            <p className={`text-xs ${subTxt} uppercase font-bold tracking-wider`}>Service</p>
+                            <p className="text-ecoGreen font-bold">API IA connectée</p>
                         </div>
                     </header>
                     <div className="p-8 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-3 gap-8">
                         <div className="col-span-1 lg:col-span-2 space-y-6">
-                            <CameraZone aiResult={INITIAL_RESULT} onConfirm={handleConfirm} onCorrect={handleCorrect} />
+                            <CameraZone aiResult={INITIAL_RESULT} onPrediction={refreshStats} />
                             <div className="grid grid-cols-2 gap-4">
                                 <div className={`${cardBg} p-5 rounded-2xl shadow-sm border flex items-center space-x-4 transition-colors duration-300`}>
                                     <div className="p-3 bg-blue-50 text-blue-600 rounded-xl"><Package className="w-6 h-6" /></div>
                                     <div>
-                                        <p className={`text-sm ${cardSub} font-medium`}>Déchets triés</p>
-                                        <p className={`text-2xl font-bold ${cardTxt}`}>{dechets}</p>
+                                        <p className={`text-sm ${cardSub} font-medium`}>Prédictions enregistrées</p>
+                                        <p className={`text-2xl font-bold ${cardTxt}`}>{stats?.total_predictions ?? '—'}</p>
                                     </div>
                                 </div>
                                 <div className={`${cardBg} p-5 rounded-2xl shadow-sm border flex items-center space-x-4 transition-colors duration-300`}>
-                                    <div className="p-3 bg-ecoGreen/10 text-ecoGreen rounded-xl"><CloudSnow className="w-6 h-6" /></div>
+                                    <div className="p-3 bg-ecoGreen/10 text-ecoGreen rounded-xl"><BarChart3 className="w-6 h-6" /></div>
                                     <div>
-                                        <p className={`text-sm ${cardSub} font-medium`}>CO2 Évité (est.)</p>
-                                        <p className={`text-2xl font-bold ${cardTxt}`}>1.2 kg</p>
+                                        <p className={`text-sm ${cardSub} font-medium`}>Confiance moyenne</p>
+                                        <p className={`text-2xl font-bold ${cardTxt}`}>{stats ? `${Math.round(stats.average_confidence * 100)} %` : '—'}</p>
                                     </div>
                                 </div>
                             </div>
@@ -365,30 +381,6 @@ export default function Scan() {
                                 <p className="text-sm text-amber-50 leading-relaxed">
                                     Inutile de laver vos boîtes de conserve avant de les jeter ! Il suffit de bien les vider. Les laver gaspille de l'eau potable inutilement.
                                 </p>
-                            </div>
-                            <div className={`${cardBg} rounded-2xl shadow-sm border p-6 transition-colors duration-300`}>
-                                <h3 className={`${cardTxt} font-bold mb-4 flex items-center justify-between`}>
-                                    <span>Top Recycleurs</span>
-                                    <a href="#" className="text-ecoGreen text-sm font-medium hover:underline flex items-center">Voir tout <ChevronRight className="w-3 h-3 ml-0.5" /></a>
-                                </h3>
-                                <div className="space-y-3">
-                                    <div className={`flex items-center justify-between p-2 rounded-lg ${rowBg}`}>
-                                        <div className="flex items-center space-x-3">
-                                            <span className="text-yellow-500 font-bold w-4">1</span>
-                                            <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-xs font-bold text-blue-800">S</div>
-                                            <span className={`text-sm font-medium ${cardTxt} italic text-gray-400`}>À connecter (BDD)</span>
-                                        </div>
-                                        <span className={`text-sm font-bold ${cardTxt} italic text-gray-400`}>— pts</span>
-                                    </div>
-                                    <div className="flex items-center justify-between p-2 rounded-lg border border-ecoGreen bg-green-50">
-                                        <div className="flex items-center space-x-3">
-                                            <span className="text-ecoGreen font-bold w-4">7</span>
-                                            <div className="w-8 h-8 rounded-full bg-ecoBrown flex items-center justify-center text-xs font-bold text-white">K</div>
-                                            <span className="text-sm font-bold text-ecoGreen">Katia (moi) 🌱</span>
-                                        </div>
-                                        <span className="text-sm font-bold text-ecoGreen">{points} pts</span>
-                                    </div>
-                                </div>
                             </div>
                             <div className={`${cardBg} rounded-2xl shadow-sm border p-6 transition-colors duration-300`}>
                                 <h3 className={`${cardTxt} font-bold mb-3 flex items-center text-sm`}>

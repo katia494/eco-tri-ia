@@ -31,6 +31,7 @@ Utilisateur -> React/Vite -> FastAPI -> YOLOv8n-cls
 - validation du type, du contenu et de la taille (10 Mo maximum) ;
 - classification en `cardboard`, `glass`, `metal`, `paper`, `plastic`, `trash` ;
 - score de confiance et consigne de tri ;
+- signalement explicite des prédictions sous 60 % de confiance ;
 - historique et statistiques des prédictions ;
 - documentation OpenAPI sur `/docs` ;
 - tests automatisés backend, lint et build frontend dans GitHub Actions.

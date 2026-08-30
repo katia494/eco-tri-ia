@@ -43,7 +43,8 @@ def test_predict_with_image():
             "model": "yolov8n-cls-v1",
             "image_name": "test.jpg",
             "message": "Déchet classifié : plastic",
-            "sorting_instruction": "Déposez-le dans le bac de tri."
+            "sorting_instruction": "Déposez-le dans le bac de tri.",
+            "is_uncertain": False,
         }
         response = client.post(
             "/predict",

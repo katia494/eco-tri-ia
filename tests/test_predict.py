@@ -49,6 +49,14 @@ def test_predict_returns_valid_confidence():
     assert 0.0 <= result["confidence"] <= 1.0, f"❌ Confiance hors limites : {result['confidence']}"
     print(f"✅ Confiance valide : {result['confidence']}")
 
+def test_low_confidence_prediction_is_marked_uncertain():
+    """Une confiance sous le seuil ne doit pas produire une consigne catégorique."""
+    with patch("backend.api.predict.service.predict", return_value=("paper", 0.52)):
+        result = predict_waste(create_image_bytes(), "metal-externe.jpg")
+
+    assert result["is_uncertain"] is True
+    assert "Résultat incertain" in result["sorting_instruction"]
+
 # ─── Test 4 — La classe retournée est valide ──────────────────────
 def test_predict_returns_valid_class():
     """Vérifie que la classe retournée est dans CATEGORIES."""

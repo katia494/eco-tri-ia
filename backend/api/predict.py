@@ -79,14 +79,23 @@ def predict_waste(image_bytes: bytes, filename: str = "") -> dict:
     image = decode_image(image_bytes)
     waste_class, confidence = service.predict(image)
     confidence = round(confidence, 4)
+    is_uncertain = confidence < settings.confidence_threshold
+    instruction = SORTING_INSTRUCTIONS[waste_class]
+    if is_uncertain:
+        instruction = (
+            "Résultat incertain : prenez une nouvelle photo avec un seul objet, "
+            "bien éclairé et sur un fond simple avant de suivre une consigne de tri."
+        )
     return {
         "waste_class": waste_class,
         "confidence": confidence,
         "model": settings.model_version,
         "image_name": filename,
-        "sorting_instruction": SORTING_INSTRUCTIONS[waste_class],
+        "sorting_instruction": instruction,
+        "is_uncertain": is_uncertain,
         "message": (
-            f"Déchet classifié comme {waste_class} "
-            f"avec {confidence * 100:.1f} % de confiance."
+            f"Résultat incertain : {waste_class} avec {confidence * 100:.1f} % de confiance."
+            if is_uncertain
+            else f"Déchet classifié comme {waste_class} avec {confidence * 100:.1f} % de confiance."
         ),
     }

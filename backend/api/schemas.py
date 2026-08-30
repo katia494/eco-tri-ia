@@ -27,6 +27,7 @@ class PredictResponse(BaseModel):
     message: str
     image_name: str
     sorting_instruction: str
+    is_uncertain: bool
 
 class ModelInfoResponse(BaseModel):
     """Informations publiques sur le modèle chargé par l'API."""
