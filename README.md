@@ -135,4 +135,65 @@ ni mot de passe inscrit dans le dépôt.
 Les choix techniques, le RGPD, la veille, le benchmark, le monitoring,
 l'incident et la carte des compétences sont regroupés dans [`docs/`](docs/).
 
-Projet repris et développé individuellement par **Katia Boussad**.
+## Recherche des points de collecte
+
+Après une prédiction fiable, l'application utilise les coordonnées GPS du
+navigateur et le type de déchet reconnu pour rechercher les points de collecte
+compatibles à proximité de l'utilisateur.
+
+Les données sont récupérées depuis OpenStreetMap avec l'API Overpass.
+
+### Endpoint
+
+```http
+GET /collection-points
+Paramètres :
+
+Paramètre	Type	Description
+latitude	float	Latitude GPS de l'utilisateur
+longitude	float	Longitude GPS de l'utilisateur
+waste_type	string	Type de déchet reconnu
+radius_meters	integer	Rayon de recherche, 3 000 mètres par défaut
+
+
+Exemple :
+
+curl.exe "http://127.0.0.1:8000/collection-points?latitude=48.7980&longitude=2.3130&waste_type=plastic"
+
+Exemple de réponse :
+```json
+{
+  "waste_type": "plastic",
+  "provider": "OpenStreetMap / Overpass API",
+  "points": [
+    {
+      "name": "Point de collecte",
+      "latitude": 48.7982,
+      "longitude": 2.3125,
+      "distance_meters": 784,
+      "address": null,
+      "source": "OpenStreetMap"
+    }
+  ]
+}
+```
+
+Les résultats sont normalisés, calculés en mètres puis triés du plus proche au
+plus éloigné. Le frontend affiche les trois premiers points et permet d'ouvrir
+OpenStreetMap autour du point le plus proche.
+
+Si la géolocalisation est refusée, si aucun point n'est trouvé ou si le service
+externe est indisponible, l'application affiche un message explicite et
+conserve le parcours de scan fonctionnel.
+
+Les noms et les types de déchets dépendent des informations renseignées dans
+OpenStreetMap. Certains points peuvent donc avoir un nom générique ou une
+adresse vide.
+
+Tests associés :
+
+pytest tests/test_collection_points.py -v
+
+Cette fonctionnalité transforme une prédiction IA en action concrète en
+proposant à l'utilisateur un point de collecte proche et adapté au déchet
+identifié.
