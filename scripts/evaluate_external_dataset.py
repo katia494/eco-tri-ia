@@ -138,7 +138,33 @@ def calculate_metrics(
         "model": model_name,
         "dataset_origin": origin,
     }
+def compute_report(
+    records: list[dict[str, Any]],
+    threshold: float = 0.6,
+    model_name: str = "best.pt",
+    origin: str = "origine non documentée",
+) -> dict[str, Any]:
+    normalized_records: list[dict[str, Any]] = []
 
+    for record in records:
+        expected = str(record["expected_class"])
+        predicted = str(record["predicted_class"])
+        confidence = float(record.get("confidence", 0.0))
+
+        normalized_records.append(
+            {
+                **record,
+                "is_correct": predicted == expected,
+                "is_uncertain": confidence < threshold,
+            }
+        )
+
+    return calculate_metrics(
+        records=normalized_records,
+        model_name=model_name,
+        threshold=threshold,
+        origin=origin,
+    )
 
 def write_csv_reports(
     output_dir: Path,
