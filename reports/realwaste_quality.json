@@ -1,0 +1,40 @@
+{
+  "generated_at": "2026-08-31T11:44:18.821717+00:00",
+  "source": "data\\external_test_realwaste",
+  "classes_expected": [
+    "cardboard",
+    "glass",
+    "metal",
+    "paper",
+    "plastic",
+    "trash"
+  ],
+  "counts_by_class": {
+    "cardboard": 461,
+    "glass": 420,
+    "metal": 790,
+    "paper": 500,
+    "plastic": 921,
+    "trash": 495
+  },
+  "total_discovered": 3587,
+  "valid_images": 3587,
+  "invalid_images": 0,
+  "invalid_files": [],
+  "unexpected_files": [],
+  "duplicate_files": 0,
+  "duplicate_groups": [],
+  "formats": {
+    "JPEG": 3587
+  },
+  "modes": {
+    "RGB": 3587
+  },
+  "dimensions": {
+    "min_width": 524,
+    "max_width": 524,
+    "min_height": 524,
+    "max_height": 524
+  },
+  "usable_images": 3587
+}

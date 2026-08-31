@@ -1,0 +1,44 @@
+{
+  "model": "best.pt",
+  "test_images": 383,
+  "accuracy": 0.8851,
+  "macro_f1": 0.87,
+  "per_class": {
+    "cardboard": {
+      "support": 61,
+      "precision": 1.0,
+      "recall": 0.9016,
+      "f1": 0.9483
+    },
+    "glass": {
+      "support": 76,
+      "precision": 0.8372,
+      "recall": 0.9474,
+      "f1": 0.8889
+    },
+    "metal": {
+      "support": 62,
+      "precision": 0.9074,
+      "recall": 0.7903,
+      "f1": 0.8448
+    },
+    "paper": {
+      "support": 90,
+      "precision": 0.8878,
+      "recall": 0.9667,
+      "f1": 0.9255
+    },
+    "plastic": {
+      "support": 72,
+      "precision": 0.8923,
+      "recall": 0.8056,
+      "f1": 0.8467
+    },
+    "trash": {
+      "support": 22,
+      "precision": 0.72,
+      "recall": 0.8182,
+      "f1": 0.766
+    }
+  }
+}

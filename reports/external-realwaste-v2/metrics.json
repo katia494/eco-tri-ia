@@ -1,0 +1,99 @@
+{
+  "test_images": 3587,
+  "accuracy": 0.322,
+  "macro_f1": 0.31,
+  "confidence_threshold": 0.6,
+  "uncertain_predictions": 930,
+  "uncertain_rate": 0.2593,
+  "error_count": 2432,
+  "per_class": {
+    "cardboard": {
+      "support": 461,
+      "precision": 0.1262,
+      "recall": 0.1735,
+      "f1": 0.1461
+    },
+    "glass": {
+      "support": 420,
+      "precision": 0.6111,
+      "recall": 0.1048,
+      "f1": 0.1789
+    },
+    "metal": {
+      "support": 790,
+      "precision": 0.6483,
+      "recall": 0.357,
+      "f1": 0.4604
+    },
+    "paper": {
+      "support": 500,
+      "precision": 0.4381,
+      "recall": 0.538,
+      "f1": 0.4829
+    },
+    "plastic": {
+      "support": 921,
+      "precision": 0.5431,
+      "recall": 0.2052,
+      "f1": 0.2979
+    },
+    "trash": {
+      "support": 495,
+      "precision": 0.1961,
+      "recall": 0.5879,
+      "f1": 0.2941
+    }
+  },
+  "confusion_matrix": {
+    "cardboard": {
+      "cardboard": 80,
+      "glass": 2,
+      "metal": 17,
+      "paper": 128,
+      "plastic": 14,
+      "trash": 220
+    },
+    "glass": {
+      "cardboard": 88,
+      "glass": 44,
+      "metal": 27,
+      "paper": 46,
+      "plastic": 81,
+      "trash": 134
+    },
+    "metal": {
+      "cardboard": 127,
+      "glass": 17,
+      "metal": 282,
+      "paper": 47,
+      "plastic": 48,
+      "trash": 269
+    },
+    "paper": {
+      "cardboard": 22,
+      "glass": 0,
+      "metal": 13,
+      "paper": 269,
+      "plastic": 5,
+      "trash": 191
+    },
+    "plastic": {
+      "cardboard": 212,
+      "glass": 9,
+      "metal": 75,
+      "paper": 57,
+      "plastic": 189,
+      "trash": 379
+    },
+    "trash": {
+      "cardboard": 105,
+      "glass": 0,
+      "metal": 21,
+      "paper": 67,
+      "plastic": 11,
+      "trash": 291
+    }
+  },
+  "model": "best.pt",
+  "dataset_origin": "RealWaste - images indépendantes - modèle V2"
+}

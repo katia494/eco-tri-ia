@@ -1,0 +1,16 @@
+{
+  "generated_at": "2026-08-31T12:58:04.616047+00:00",
+  "dataset_origin": "RealWaste - images indépendantes - modèle V2",
+  "total_images": 3587,
+  "valid_images": 3587,
+  "invalid_images": 0,
+  "duplicate_files": 0,
+  "counts_by_class": {
+    "cardboard": 461,
+    "glass": 420,
+    "metal": 790,
+    "paper": 500,
+    "plastic": 921,
+    "trash": 495
+  }
+}

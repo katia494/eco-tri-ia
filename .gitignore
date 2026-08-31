@@ -231,3 +231,13 @@ frontend/.env.local
 # Artefacts locaux du pipeline IA
 data/classification/
 runs/
+
+
+/data/raw/garbage_dataset_v2/
+/data/raw/realwaste/
+/data/classification/v3/
+/data/classification/v3_clean/
+/data/classification/v3_final/
+/data/external_test_realwaste/
+/runs/
+/yolov8n-cls.pt

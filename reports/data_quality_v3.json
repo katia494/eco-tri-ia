@@ -1,0 +1,42 @@
+{
+  "generated_at": "2026-08-31T09:00:52.498489+00:00",
+  "source": "data\\raw\\garbage_dataset_v2\\six_classes",
+  "classes_expected": [
+    "cardboard",
+    "glass",
+    "metal",
+    "paper",
+    "plastic",
+    "trash"
+  ],
+  "counts_by_class": {
+    "cardboard": 1411,
+    "glass": 1736,
+    "metal": 930,
+    "paper": 1336,
+    "plastic": 1597,
+    "trash": 453
+  },
+  "total_discovered": 7463,
+  "valid_images": 7463,
+  "invalid_images": 0,
+  "invalid_files": [],
+  "unexpected_files": [],
+  "duplicate_files": 0,
+  "duplicate_groups": [],
+  "formats": {
+    "JPEG": 7456,
+    "MPO": 5,
+    "WEBP": 2
+  },
+  "modes": {
+    "RGB": 7463
+  },
+  "dimensions": {
+    "min_width": 51,
+    "max_width": 7786,
+    "min_height": 71,
+    "max_height": 6283
+  },
+  "usable_images": 7463
+}
