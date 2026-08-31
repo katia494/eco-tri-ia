@@ -1,0 +1,40 @@
+{
+  "generated_at": "2026-08-30T15:56:00.941392+00:00",
+  "source": "data\\external_test",
+  "classes_expected": [
+    "cardboard",
+    "glass",
+    "metal",
+    "paper",
+    "plastic",
+    "trash"
+  ],
+  "counts_by_class": {
+    "cardboard": 5,
+    "glass": 5,
+    "metal": 5,
+    "paper": 5,
+    "plastic": 5,
+    "trash": 5
+  },
+  "total_discovered": 30,
+  "valid_images": 30,
+  "invalid_images": 0,
+  "invalid_files": [],
+  "unexpected_files": [],
+  "duplicate_files": 0,
+  "duplicate_groups": [],
+  "formats": {
+    "JPEG": 30
+  },
+  "modes": {
+    "RGB": 30
+  },
+  "dimensions": {
+    "min_width": 193,
+    "max_width": 474,
+    "min_height": 140,
+    "max_height": 220
+  },
+  "usable_images": 30
+}
