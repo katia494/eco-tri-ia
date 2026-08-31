@@ -35,3 +35,19 @@ class ModelInfoResponse(BaseModel):
     task: str
     classes: list[str]
     input_size: int
+class CollectionPointResponse(BaseModel):
+    """Point de collecte retourné à l'application."""
+    name: str
+    latitude: float = Field(ge=-90, le=90)
+    longitude: float = Field(ge=-180, le=180)
+    distance_meters: int = Field(ge=0)
+    address: Optional[str] = None
+    source: str
+
+
+class CollectionPointsResponse(BaseModel):
+    """Liste des points de collecte proches pour un type de déchet."""
+    waste_type: str
+    radius_meters: int = Field(ge=100, le=10_000)
+    provider: str
+    points: list[CollectionPointResponse]
