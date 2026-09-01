@@ -148,4 +148,8 @@ ni mot de passe inscrit dans le dépôt.
 Les choix techniques, le RGPD, la veille, le benchmark, le monitoring,
 l'incident et la carte des compétences sont regroupés dans [`docs/`](docs/).
 
+- Documentation de l’API de données sécurisée : [`docs/api_data.md`](docs/api_data.md).
+
+
+
 Projet repris et développé individuellement par **Katia Boussad**.
