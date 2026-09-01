@@ -1,0 +1,6 @@
+﻿{
+    "status":  "ok",
+    "message":  "ECO-TRI API is running",
+    "version":  "1.0.0",
+    "model":  "yolov8n-cls-v3"
+}
