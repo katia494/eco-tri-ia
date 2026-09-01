@@ -81,6 +81,19 @@ npm run lint
 npm test
 npm run build
 ```
+## Collecte multi-source (C1)
+
+Les données image proviennent de trois sources documentées dans
+[`docs/data_sources.md`](docs/data_sources.md) :
+
+- Garbage Classification : dataset historique V2 ;
+- Garbage Classification V2 : extension utilisée pour V3 ;
+- RealWaste : évaluation externe, exclue de l'entraînement.
+
+Vérifier les sources déjà présentes et générer le manifeste de traçabilité :
+
+```powershell
+python scripts\collect_sources.py
 
 ## Préparer et entraîner le modèle
 
