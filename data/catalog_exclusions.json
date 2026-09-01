@@ -1,0 +1,31 @@
+{
+  "decision": "Exclure les fichiers dont le libellé est contradictoire avec une copie exacte validée par audit.",
+  "method": "Comparaison SHA-256, puis conservation de la copie correctement étiquetée.",
+  "files": [
+    {
+      "source_id": "garbage_classification_v1",
+      "path": "metal/metal91.jpg",
+      "reason": "Copie exacte de glass/glass115.jpg ; objet identifié comme verre."
+    },
+    {
+      "source_id": "garbage_classification_v1",
+      "path": "plastic/plastic152.jpg",
+      "reason": "Copie exacte de glass/glass176.jpg ; objet identifié comme verre."
+    },
+    {
+      "source_id": "garbage_classification_v1",
+      "path": "plastic/plastic332.jpg",
+      "reason": "Copie exacte de glass/glass389.jpg ; objet identifié comme verre."
+    },
+    {
+      "source_id": "garbage_classification_v2",
+      "path": "plastic/plastic_151.jpg",
+      "reason": "Copie exacte de V1 glass/glass176.jpg ; label plastic contradictoire."
+    },
+    {
+      "source_id": "garbage_classification_v2",
+      "path": "plastic/plastic_155.jpg",
+      "reason": "Copie exacte de V1 glass/glass389.jpg ; label plastic contradictoire."
+    }
+  ]
+}

@@ -241,3 +241,10 @@ runs/
 /data/external_test_realwaste/
 /runs/
 /yolov8n-cls.pt
+
+
+
+# Bases SQLite locales, sauvegardes et journaux SQLite
+data/*.db
+data/*.db-shm
+data/*.db-wal
