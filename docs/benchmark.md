@@ -1,66 +1,70 @@
-# Benchmark des modèles - ECO-TRI
+# Benchmark des solutions IA — ECO-TRI
 
 ## Besoin
 
-Classifier une photographie entière dans six catégories, localement, avec un
-modèle léger et une réponse adaptée à une application web.
+Classifier localement une photographie entière dans six catégories de déchets,
+avec un modèle léger, intégrable à une API FastAPI et compatible avec une
+utilisation respectueuse de la confidentialité.
 
 ## Comparaison décisionnelle
 
-| Solution | Adaptation aux images | Coût | Complexité | Décision |
-|---|---|---|---|---|
-| Random Forest sur pixels | Faible : structure spatiale perdue | Gratuit | Faible | Baseline uniquement |
-| XGBoost sur pixels | Faible à moyenne | Gratuit | Moyenne | Comparatif uniquement |
-| YOLOv8 Detect | Bonne avec bounding boxes | Gratuit | Élevée | Écarté : aucune bounding box |
-| MobileNetV3 | Très bonne | Gratuit | Moyenne | Alternative pertinente |
-| YOLOv8n-cls | Très bonne pour une classe par image | Gratuit | Moyenne | **Retenu** |
-| Google/AWS Vision | Bonne | Payant/cloud | Faible | Écarté : coût et transfert d'images |
+| Solution | Adaptation au besoin | Fonctionnement local | Coût | Décision |
+|---|---|---:|---:|---|
+| Random Forest sur pixels | Faible : structure spatiale perdue | Oui | Gratuit | Baseline uniquement |
+| XGBoost sur pixels | Faible à moyenne | Oui | Gratuit | Comparatif uniquement |
+| YOLOv8 Detect | Nécessite des boîtes englobantes | Oui | Gratuit | Écarté : dataset sans annotations de détection |
+| MobileNetV3 | Très bonne | Oui | Gratuit | Alternative pertinente |
+| Google / AWS Vision | Bonne | Non | Payant | Écarté : coût et transfert d’images |
+| YOLOv8n-cls | Très bonne pour une classe par image | Oui | Gratuit | **Retenu** |
 
-Cette première table est une analyse de décision, pas une mesure expérimentale
-des performances de toutes les solutions.
+## Choix retenu
 
-## Matrice de décision pondérée
+YOLOv8n-cls est adapté au problème : chaque image possède une seule catégorie
+globale et le dataset est organisé en dossiers de classes. Le modèle conserve
+l’information spatiale de l’image, utilise des poids préentraînés et reste assez
+léger pour une exécution locale avec FastAPI.
 
-Notes sur 5. Pondération : qualité image 35 %, fonctionnement local/RGPD 25 %,
-facilité d'intégration 20 %, coût 10 %, légèreté 10 %.
+YOLO Detect a été écarté : aucune boîte englobante n’est disponible dans les
+datasets. Les services cloud ont été écartés pour limiter le coût et éviter le
+transfert des images utilisateur vers un service externe.
 
-| Solution | Qualité image | Local/RGPD | Intégration | Coût | Légèreté | Score /5 |
-|---|---:|---:|---:|---:|---:|---:|
-| Random Forest pixels | 2 | 5 | 4 | 5 | 4 | 3,55 |
-| XGBoost pixels | 2 | 5 | 3 | 5 | 3 | 3,25 |
-| MobileNetV3 | 5 | 5 | 3 | 5 | 5 | 4,60 |
-| YOLOv8n-cls | 5 | 5 | 5 | 5 | 4 | **4,90** |
-| Google/AWS Vision | 4 | 1 | 4 | 2 | 5 | 3,15 |
+## Résultats mesurés
 
-Les notes sont des appréciations techniques justifiées par les contraintes du
-MVP. Seul YOLOv8n-cls a été entraîné et mesuré dans ce projet.
+| Évaluation | Jeu évalué | Images | Accuracy | Macro F1 | Interprétation |
+|---|---:|---:|---:|---:|---|
+| V2 historique | Test Kaggle V2 indépendant | 383 | 91,64 % | 90,48 % | Référence historique |
+| V3 interne | Test issu du dataset V3 | 793 | **93,69 %** | **92,87 %** | Très bon résultat dans un environnement proche de l’entraînement |
+| V3 contrôlé | Ancien test Kaggle V2 verrouillé | 383 | 88,51 % | 87,00 % | Mesure comparable à V2, baisse à analyser honnêtement |
+| V3 externe | RealWaste indépendant | 3 587 | 41,96 % | 40,98 % | Généralisation encore insuffisante sur des images plus réalistes |
 
-## Résultat du modèle retenu
+Les métriques détaillées sont disponibles dans :
 
-- entraînement : 1 764 images ;
-- validation : 377 images ;
-- test indépendant : 383 images ;
-- accuracy test : **91,64 %** ;
-- macro F1 test : **90,48 %** ;
-- meilleur entraînement : époque 8 ; arrêt anticipé après 15 époques ;
-- taille du modèle : environ 3 Mo.
+- `reports/model-v3-final/metrics.json` ;
+- `reports/model-v3-on-v2-test/metrics.json` ;
+- `reports/external-realwaste-v3/metrics.json`.
 
-Les métriques v2 par classe, la matrice de confusion et le manifeste du split se
-trouvent dans `reports/model`. Les résultats v1 sont archivés dans
-`reports/model-v1`. Le score de validation n'est pas présenté comme score final :
-seul le jeu de test indépendant sert à annoncer la performance finale.
+## Analyse critique
 
-## Justification
+La V3 améliore les résultats sur son test interne, avec 93,69 % d’accuracy.
+Cependant, son score sur le test V2 verrouillé est inférieur à la référence V2.
+Elle ne doit donc pas être présentée comme une amélioration universelle sans
+nuance.
 
-YOLOv8n-cls conserve l'information spatiale de l'image, utilise des poids
-préentraînés et reste suffisamment léger pour une API CPU. Ce choix correspond au
-dataset par dossiers et ne nécessite pas d'inventer des annotations de détection.
+Le test RealWaste est la preuve la plus importante de généralisation : avec
+41,96 % d’accuracy et 40,98 % de macro F1, le modèle reste limité lorsque les
+images sont plus variées, plus réalistes et prises dans d’autres contextes.
 
-## Limite observée hors dataset
+Le seuil d’incertitude de l’API est maintenu à 60 %. Sur RealWaste, 14,02 % des
+prédictions sont signalées comme incertaines. Ce mécanisme réduit le risque de
+donner une consigne catégorique lorsque le modèle hésite, mais il ne remplace
+pas une amélioration du dataset.
 
-Une photo externe de métal trouvée sur le Web a été prédite `paper` avec 52 % de
-confiance. Ce test isolé ne remplace pas un benchmark, mais révèle un possible
-décalage entre le dataset Kaggle et les images réelles. La version corrigée de
-l'application signale désormais toute confiance inférieure à 60 % et demande une
-nouvelle photo. Un jeu externe équilibré reste à constituer pour mesurer la
-généralisation avant une utilisation réelle.
+## Décision
+
+YOLOv8n-cls V3 est conservé pour la démonstration technique, car il permet un
+service local, léger et documenté. Le projet ne revendique pas une robustesse
+suffisante pour un usage municipal réel.
+
+Avant un déploiement réel, il faudrait collecter davantage d’images proches des
+conditions d’usage, enrichir les classes faibles et réévaluer le modèle sur un
+jeu externe indépendant.
