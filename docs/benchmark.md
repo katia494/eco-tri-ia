@@ -8,14 +8,15 @@ utilisation respectueuse de la confidentialité.
 
 ## Comparaison décisionnelle
 
-| Solution | Adaptation au besoin | Fonctionnement local | Coût | Décision |
-|---|---|---:|---:|---|
-| Random Forest sur pixels | Faible : structure spatiale perdue | Oui | Gratuit | Baseline uniquement |
-| XGBoost sur pixels | Faible à moyenne | Oui | Gratuit | Comparatif uniquement |
-| YOLOv8 Detect | Nécessite des boîtes englobantes | Oui | Gratuit | Écarté : dataset sans annotations de détection |
-| MobileNetV3 | Très bonne | Oui | Gratuit | Alternative pertinente |
-| Google / AWS Vision | Bonne | Non | Payant | Écarté : coût et transfert d’images |
-| YOLOv8n-cls | Très bonne pour une classe par image | Oui | Gratuit | **Retenu** |
+| Solution | Adaptation au besoin | Fonctionnement local | Coût | Sobriété / données | Décision |
+|---|---|---:|---:|---|---|
+| Random Forest sur pixels | Faible : structure spatiale perdue | Oui | Gratuit | Peu adapté : aplatissement coûteux et perte d'information | Baseline uniquement |
+| XGBoost sur pixels | Faible à moyenne | Oui | Gratuit | Peu adapté : mêmes limites sur les pixels aplatis | Comparatif uniquement |
+| YOLOv8 Detect | Nécessite des boîtes englobantes | Oui | Gratuit | Calcul local, mais architecture inutilement complexe pour le besoin | Écarté : dataset sans annotations de détection |
+| MobileNetV3 | Très bonne | Oui | Gratuit | Modèle léger, adapté à une exécution locale sur CPU | Alternative pertinente |
+| Google / AWS Vision | Bonne | Non | Payant | Transfert d'images vers le cloud et dépendance à un service externe | Écarté : coût et confidentialité |
+| YOLOv8n-cls | Très bonne pour une classe par image | Oui | Gratuit | Modèle léger, local, sans transfert d'image utilisateur | **Retenu** |
+
 
 ## Choix retenu
 

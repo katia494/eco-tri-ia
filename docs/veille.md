@@ -36,3 +36,15 @@ La veille est revue avant chaque changement du modèle et au minimum une fois pa
 mois. Elle suit les versions Ultralytics, les vulnérabilités des dépendances et
 les modèles légers comme MobileNet. Toute mise à jour exige une nouvelle
 évaluation sur le même protocole de test.
+
+
+## Organisation et partage de la veille
+
+- Un créneau d'au moins **une heure par semaine** est réservé à la veille.
+- Une revue complémentaire est réalisée avant chaque choix technique majeur :
+  changement de modèle, dépendance, stratégie de déploiement ou traitement de données.
+- Les sources sont sélectionnées selon leur fiabilité, leur date, leur auteur,
+  leur accessibilité et leur adéquation avec le besoin.
+- Chaque décision issue de la veille est ajoutée et datée dans ce document.
+- Cette synthèse est versionnée dans le dépôt GitHub et constitue le support de
+  partage pour les parties prenantes du projet et le jury.
