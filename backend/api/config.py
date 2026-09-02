@@ -15,10 +15,10 @@ class Settings(BaseSettings):
 
     # Modèle IA
     model_path: str = "backend/models/best.pt"
-    model_version: str = "yolov8n-cls-v2"
+    model_version: str = "yolov8n-cls-v3"
     confidence_threshold: float = 0.60
     max_upload_bytes: int = 10 * 1024 * 1024
-
+    data_api_key: str | None = None
     # CORS
     allowed_origins: list = ["http://localhost:5173"]
 

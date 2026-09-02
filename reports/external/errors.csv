@@ -1,0 +1,20 @@
+image_path,origin,expected_class,predicted_class,confidence,is_uncertain,is_correct
+cardboard\OIP (4).jpg,"images web externes hors Kaggle, collectées le 30 août 2026",cardboard,paper,0.7108,False,False
+cardboard\OIP (5).jpg,"images web externes hors Kaggle, collectées le 30 août 2026",cardboard,plastic,0.6262,False,False
+cardboard\OIP (6).jpg,"images web externes hors Kaggle, collectées le 30 août 2026",cardboard,paper,0.9883,False,False
+glass\OIP (10).jpg,"images web externes hors Kaggle, collectées le 30 août 2026",glass,cardboard,0.5239,True,False
+glass\OIP (11).jpg,"images web externes hors Kaggle, collectées le 30 août 2026",glass,cardboard,0.6943,False,False
+glass\OIP (12).jpg,"images web externes hors Kaggle, collectées le 30 août 2026",glass,cardboard,0.9998,False,False
+glass\OIP (8).jpg,"images web externes hors Kaggle, collectées le 30 août 2026",glass,paper,0.7732,False,False
+glass\OIP (9).jpg,"images web externes hors Kaggle, collectées le 30 août 2026",glass,plastic,0.9667,False,False
+metal\OIP (16).jpg,"images web externes hors Kaggle, collectées le 30 août 2026",metal,cardboard,0.9997,False,False
+metal\OIP (17).jpg,"images web externes hors Kaggle, collectées le 30 août 2026",metal,cardboard,0.7561,False,False
+metal\OIP (34).jpg,"images web externes hors Kaggle, collectées le 30 août 2026",metal,cardboard,0.7655,False,False
+paper\OIP (18).jpg,"images web externes hors Kaggle, collectées le 30 août 2026",paper,cardboard,0.9805,False,False
+plastic\OIP (23).jpg,"images web externes hors Kaggle, collectées le 30 août 2026",plastic,trash,0.8453,False,False
+plastic\OIP (25).jpg,"images web externes hors Kaggle, collectées le 30 août 2026",plastic,metal,0.806,False,False
+plastic\OIP (26).jpg,"images web externes hors Kaggle, collectées le 30 août 2026",plastic,cardboard,0.9927,False,False
+trash\OIP (29).jpg,"images web externes hors Kaggle, collectées le 30 août 2026",trash,metal,0.952,False,False
+trash\OIP (30).jpg,"images web externes hors Kaggle, collectées le 30 août 2026",trash,paper,0.8414,False,False
+trash\OIP (31).jpg,"images web externes hors Kaggle, collectées le 30 août 2026",trash,cardboard,0.9701,False,False
+trash\OIP (32).jpg,"images web externes hors Kaggle, collectées le 30 août 2026",trash,glass,0.8544,False,False

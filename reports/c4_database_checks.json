@@ -1,0 +1,44 @@
+{
+  "check": "c4_catalog_database_integrity",
+  "generated_at": "2026-09-01T13:19:59.118108+00:00",
+  "database": "data\\eco_tri.db",
+  "expected_from_preflight": {
+    "candidates": 9985,
+    "unique_images": 7769
+  },
+  "observed": {
+    "canonical_images": 7769,
+    "provenance_links": 9985,
+    "sources_count": 3,
+    "source_links": {
+      "garbage_classification_v1": 2524,
+      "garbage_classification_v2": 7461,
+      "realwaste": 0
+    },
+    "category_counts": {
+      "cardboard": 1427,
+      "glass": 1876,
+      "metal": 940,
+      "paper": 1361,
+      "plastic": 1626,
+      "trash": 539
+    },
+    "orphan_links": 0,
+    "missing_sha256": 0,
+    "missing_source": 0,
+    "missing_date": 0,
+    "foreign_key_errors": 0
+  },
+  "checks": {
+    "canonical_images_match_preflight": true,
+    "provenance_links_match_candidates": true,
+    "source_links_match_preflight": true,
+    "three_sources_registered": true,
+    "no_orphan_links": true,
+    "no_missing_sha256": true,
+    "no_missing_source": true,
+    "no_missing_date": true,
+    "no_foreign_key_error": true
+  },
+  "status": "ok"
+}

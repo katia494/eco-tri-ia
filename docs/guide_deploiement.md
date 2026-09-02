@@ -51,5 +51,5 @@ statistiques. Ne pas créer de release si l'un de ces contrôles échoue.
 |---|---|---|
 | `DATABASE_URL` | `sqlite:///./data/eco_tri.db` | Stockage SQLite local unique |
 | `MODEL_PATH` | `backend/models/best.pt` | Modèle final |
-| `MODEL_VERSION` | `yolov8n-cls-v2` | Traçabilité |
+| `MODEL_VERSION` | `yolov8n-cls-v3` | Traçabilité |
 | `MAX_UPLOAD_BYTES` | `10485760` | Limite d'upload |

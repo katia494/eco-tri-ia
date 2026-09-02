@@ -1,0 +1,53 @@
+{
+  "generated_at": "2026-09-01T12:11:13.828263+00:00",
+  "purpose": "Préparation de l'import multi-source C4",
+  "sources": [
+    {
+      "id": "garbage_classification_v1",
+      "role": "training_historical_v2",
+      "class_root": "data\\raw\\Garbage classification\\Garbage classification",
+      "imported_to_training_catalog": true,
+      "discovered": 2527,
+      "excluded_by_quality_rules": 3,
+      "candidates": 2524,
+      "by_class": {
+        "cardboard": 403,
+        "glass": 501,
+        "metal": 409,
+        "paper": 594,
+        "plastic": 480,
+        "trash": 137
+      }
+    },
+    {
+      "id": "garbage_classification_v2",
+      "role": "training_extension_v3",
+      "class_root": "data\\raw\\garbage_dataset_v2\\original",
+      "imported_to_training_catalog": true,
+      "discovered": 7463,
+      "excluded_by_quality_rules": 2,
+      "candidates": 7461,
+      "by_class": {
+        "cardboard": 1411,
+        "glass": 1736,
+        "metal": 930,
+        "paper": 1336,
+        "plastic": 1595,
+        "trash": 453
+      }
+    },
+    {
+      "id": "realwaste",
+      "role": "external_evaluation_only",
+      "imported_to_training_catalog": false,
+      "reason": "Jeu réservé à l'évaluation externe."
+    }
+  ],
+  "total_candidates": 9985,
+  "unique_images_by_sha256": 7769,
+  "duplicate_entries": 2216,
+  "duplicate_groups": 2216,
+  "label_conflict_groups": 0,
+  "label_conflicts": [],
+  "status": "ok"
+}

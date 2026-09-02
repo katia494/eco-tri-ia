@@ -1,0 +1,99 @@
+{
+  "test_images": 30,
+  "accuracy": 0.5333,
+  "macro_f1": 0.545,
+  "confidence_threshold": 0.6,
+  "uncertain_predictions": 4,
+  "uncertain_rate": 0.1333,
+  "error_count": 14,
+  "per_class": {
+    "cardboard": {
+      "support": 5,
+      "precision": 0.5,
+      "recall": 0.8,
+      "f1": 0.6154
+    },
+    "glass": {
+      "support": 5,
+      "precision": 0.2857,
+      "recall": 0.4,
+      "f1": 0.3333
+    },
+    "metal": {
+      "support": 5,
+      "precision": 0.4,
+      "recall": 0.4,
+      "f1": 0.4
+    },
+    "paper": {
+      "support": 5,
+      "precision": 0.6,
+      "recall": 0.6,
+      "f1": 0.6
+    },
+    "plastic": {
+      "support": 5,
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1": 0.75
+    },
+    "trash": {
+      "support": 5,
+      "precision": 1.0,
+      "recall": 0.4,
+      "f1": 0.5714
+    }
+  },
+  "confusion_matrix": {
+    "cardboard": {
+      "cardboard": 4,
+      "glass": 0,
+      "metal": 0,
+      "paper": 1,
+      "plastic": 0,
+      "trash": 0
+    },
+    "glass": {
+      "cardboard": 2,
+      "glass": 2,
+      "metal": 1,
+      "paper": 0,
+      "plastic": 0,
+      "trash": 0
+    },
+    "metal": {
+      "cardboard": 1,
+      "glass": 1,
+      "metal": 2,
+      "paper": 1,
+      "plastic": 0,
+      "trash": 0
+    },
+    "paper": {
+      "cardboard": 1,
+      "glass": 1,
+      "metal": 0,
+      "paper": 3,
+      "plastic": 0,
+      "trash": 0
+    },
+    "plastic": {
+      "cardboard": 0,
+      "glass": 1,
+      "metal": 1,
+      "paper": 0,
+      "plastic": 3,
+      "trash": 0
+    },
+    "trash": {
+      "cardboard": 0,
+      "glass": 2,
+      "metal": 1,
+      "paper": 0,
+      "plastic": 0,
+      "trash": 2
+    }
+  },
+  "model": "best.pt",
+  "dataset_origin": "images externes indépendantes"
+}

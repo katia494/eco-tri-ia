@@ -51,3 +51,24 @@ class CollectionPointsResponse(BaseModel):
     radius_meters: int = Field(ge=100, le=10_000)
     provider: str
     points: list[CollectionPointResponse]
+
+class WasteRecordResponse(BaseModel):
+    """Un enregistrement du jeu de données."""
+
+    id: int
+    file_name: str
+    category: str
+    image_path: str | None = None
+    source: str | None = None
+    created_at: str | None = None
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class RecordsPageResponse(BaseModel):
+    """Réponse paginée pour les endpoints de données."""
+
+    total: int
+    skip: int
+    limit: int
+    items: list[WasteRecordResponse]

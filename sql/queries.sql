@@ -1,51 +1,82 @@
 -- ============================================================
--- Requêtes SQL – ECO-TRI
--- Compétence C2 : Requêtes d'exploration et d'analyse
+-- Requêtes SQL vérifiées — ECO-TRI
+-- C2 : exploration, agrégation et contrôle du catalogue C4
 -- ============================================================
 
--- 1. Nombre d'images par catégorie
+-- 1. Sources collectées et nombre de liens de provenance.
+SELECT
+    s.code,
+    s.nom,
+    s.role_dans_projet,
+    COUNT(ds.dechet_id) AS liens_provenance
+FROM sources_donnees AS s
+LEFT JOIN dechet_sources AS ds
+    ON ds.source_id = s.id
+GROUP BY s.id, s.code, s.nom, s.role_dans_projet
+ORDER BY s.code;
+
+-- 2. Répartition des images canoniques par catégorie.
 SELECT
     categorie,
-    COUNT(*) AS nombre_images,
+    COUNT(*) AS images_canoniques,
     ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (), 2) AS pourcentage
 FROM dechets
 GROUP BY categorie
-ORDER BY nombre_images DESC;
+ORDER BY images_canoniques DESC;
 
--- 2. Statistiques globales du dataset
+-- 3. Nombre d'images uniques et de liens de provenance.
 SELECT
-    COUNT(*)                  AS total_images,
-    COUNT(DISTINCT categorie) AS nombre_categories,
-    MIN(date_ajout)           AS premiere_entree,
-    MAX(date_ajout)           AS derniere_entree
+    (SELECT COUNT(*) FROM dechets) AS images_canoniques,
+    (SELECT COUNT(*) FROM dechet_sources) AS liens_provenance,
+    (
+        (SELECT COUNT(*) FROM dechet_sources)
+        - (SELECT COUNT(*) FROM dechets)
+    ) AS doublons_traces_sans_duplication;
+
+-- 4. Images observées dans plusieurs sources.
+SELECT
+    d.id,
+    d.nom_fichier,
+    d.categorie,
+    COUNT(DISTINCT ds.source_id) AS nombre_sources
+FROM dechets AS d
+JOIN dechet_sources AS ds
+    ON ds.dechet_id = d.id
+GROUP BY d.id, d.nom_fichier, d.categorie
+HAVING COUNT(DISTINCT ds.source_id) > 1
+ORDER BY nombre_sources DESC, d.id
+LIMIT 20;
+
+-- 5. Vérification de l'intégrité : aucun lien orphelin attendu.
+SELECT
+    COUNT(*) AS liens_orphelins
+FROM dechet_sources AS ds
+LEFT JOIN dechets AS d
+    ON d.id = ds.dechet_id
+LEFT JOIN sources_donnees AS s
+    ON s.id = ds.source_id
+WHERE d.id IS NULL OR s.id IS NULL;
+
+-- 6. Vérification de complétude des métadonnées du catalogue.
+SELECT
+    COUNT(*) AS total_images,
+    SUM(CASE WHEN contenu_sha256 IS NOT NULL THEN 1 ELSE 0 END) AS avec_sha256,
+    SUM(CASE WHEN source_id IS NOT NULL THEN 1 ELSE 0 END) AS avec_source,
+    SUM(CASE WHEN date_ajout IS NOT NULL THEN 1 ELSE 0 END) AS avec_date_import
 FROM dechets;
 
--- 3. Recherche d'images par catégorie (exemple : plastic)
-SELECT nom_fichier, categorie, date_ajout
-FROM dechets
-WHERE categorie = 'plastic'
-ORDER BY date_ajout DESC
-LIMIT 10;
-
--- 4. Précision moyenne des prédictions IA par catégorie
+-- 7. Détail des six catégories et de leur source canonique.
 SELECT
-    waste_class,
-    COUNT(*) AS nombre_predictions,
-    ROUND(AVG(confidence) * 100, 2) AS confiance_moyenne_pct,
-    ROUND(MAX(confidence) * 100, 2) AS meilleure_confiance_pct,
-    ROUND(MIN(confidence) * 100, 2) AS moins_bonne_confiance_pct
-FROM predictions
-GROUP BY waste_class
-ORDER BY confiance_moyenne_pct DESC;
+    s.code AS source_canonique,
+    d.categorie,
+    COUNT(*) AS nombre_images
+FROM dechets AS d
+JOIN sources_donnees AS s
+    ON s.id = d.source_id
+GROUP BY s.code, d.categorie
+ORDER BY s.code, d.categorie;
 
--- 5. Catégories sous-représentées (moins de 200 images)
-SELECT categorie, COUNT(*) AS nombre
-FROM dechets
-GROUP BY categorie
-HAVING COUNT(*) < 200
-ORDER BY nombre ASC;
-
--- 6. Les 20 dernières prédictions
+-- 8. Historique des prédictions, si l'application en contient.
 SELECT
     image_name,
     waste_class,
@@ -55,19 +86,11 @@ FROM predictions
 ORDER BY created_at DESC
 LIMIT 20;
 
--- 7. Vue : distribution complète pour les graphiques
-CREATE VIEW IF NOT EXISTS vue_distribution AS
+-- 9. Vue réutilisable pour le suivi de la distribution.
+CREATE VIEW IF NOT EXISTS vue_distribution_catalogue AS
 SELECT
     categorie,
-    COUNT(*) AS nombre,
+    COUNT(*) AS nombre_images,
     ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (), 2) AS pourcentage
 FROM dechets
-GROUP BY categorie
-ORDER BY nombre DESC;
-
--- 8. Recherche par nom de fichier
-SELECT id, nom_fichier, categorie, date_ajout
-FROM dechets
-WHERE nom_fichier LIKE 'glass%'
-ORDER BY nom_fichier
-LIMIT 5;
+GROUP BY categorie;

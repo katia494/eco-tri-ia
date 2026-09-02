@@ -1,0 +1,32 @@
+﻿{
+    "application":  {
+                        "scope":  "current_process",
+                        "request_count":  14,
+                        "error_count":  0,
+                        "error_rate":  0.0,
+                        "average_latency_ms":  1297.82,
+                        "max_latency_ms":  8745.38,
+                        "status_counts":  {
+                                              "200":  14
+                                          },
+                        "endpoint_counts":  {
+                                                "GET /model/info":  2,
+                                                "GET /stats/":  6,
+                                                "POST /predict":  2,
+                                                "GET /collection-points":  2,
+                                                "GET /stats/monitoring":  2
+                                            }
+                    },
+    "model":  {
+                  "version":  "yolov8n-cls-v3",
+                  "confidence_threshold":  0.6,
+                  "prediction_count":  2,
+                  "uncertain_prediction_count":  0,
+                  "uncertain_prediction_rate":  0.0
+              },
+    "alert_thresholds":  {
+                             "error_rate":  0.05,
+                             "latency_ms":  2000,
+                             "uncertain_prediction_rate":  0.2
+                         }
+}

@@ -1,0 +1,15 @@
+image_path,origin,expected_class,predicted_class,confidence,is_uncertain,is_correct
+cardboard\OIP (4).jpg,images externes indépendantes,cardboard,paper,0.9012,False,False
+glass\OIP (10).jpg,images externes indépendantes,glass,metal,0.9916,False,False
+glass\OIP (11).jpg,images externes indépendantes,glass,cardboard,0.5382,True,False
+glass\OIP (12).jpg,images externes indépendantes,glass,cardboard,0.6169,False,False
+metal\OIP (15).jpg,images externes indépendantes,metal,paper,0.8944,False,False
+metal\OIP (16).jpg,images externes indépendantes,metal,cardboard,0.979,False,False
+metal\OIP (34).jpg,images externes indépendantes,metal,glass,0.9977,False,False
+paper\OIP (18).jpg,images externes indépendantes,paper,glass,0.553,True,False
+paper\OIP (22).jpg,images externes indépendantes,paper,cardboard,1.0,False,False
+plastic\OIP (25).jpg,images externes indépendantes,plastic,metal,1.0,False,False
+plastic\OIP (26).jpg,images externes indépendantes,plastic,glass,0.6397,False,False
+trash\OIP (29).jpg,images externes indépendantes,trash,metal,0.5536,True,False
+trash\OIP (31).jpg,images externes indépendantes,trash,glass,0.4925,True,False
+trash\OIP (32).jpg,images externes indépendantes,trash,glass,0.9812,False,False

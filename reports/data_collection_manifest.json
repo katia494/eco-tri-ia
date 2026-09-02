@@ -1,0 +1,82 @@
+{
+  "generated_at": "2026-09-01T04:51:57.999581+00:00",
+  "project": "ECO-TRI IA",
+  "purpose": "Traçabilité de la collecte multi-source. RealWaste est réservé à l'évaluation externe.",
+  "sources": [
+    {
+      "id": "garbage_classification_v1",
+      "name": "Garbage Classification",
+      "provider": "Kaggle",
+      "url": "https://www.kaggle.com/datasets/asdasdasasdas/garbage-classification",
+      "role": "training_historical_v2",
+      "local_directory": "C:\\Users\\bouss\\eco-tri-ia\\data\\raw\\Garbage classification",
+      "data_directory_used": "C:\\Users\\bouss\\eco-tri-ia\\data\\raw\\Garbage classification",
+      "exists": true,
+      "status": "ok",
+      "raw_image_count_found": 2527,
+      "expected_image_count_for_project": 2527,
+      "class_counts_found": {
+        "cardboard": 403,
+        "glass": 501,
+        "metal": 410,
+        "paper": 594,
+        "plastic": 482,
+        "trash": 137
+      },
+      "contains_personal_data": false,
+      "license_note": "Consulter et respecter la licence affichée sur Kaggle."
+    },
+    {
+      "id": "garbage_classification_v2",
+      "name": "Garbage Classification V2",
+      "provider": "Kaggle",
+      "url": "https://www.kaggle.com/datasets/sumn2u/garbage-classification-v2",
+      "role": "training_extension_v3",
+      "local_directory": "C:\\Users\\bouss\\eco-tri-ia\\data\\raw\\garbage_dataset_v2",
+      "data_directory_used": "C:\\Users\\bouss\\eco-tri-ia\\data\\raw\\garbage_dataset_v2\\original",
+      "exists": true,
+      "status": "ok",
+      "raw_image_count_found": 11503,
+      "expected_image_count_for_project": 7463,
+      "class_counts_found": {
+        "biological": 699,
+        "cardboard": 1411,
+        "clothes": 1892,
+        "glass": 1736,
+        "metal": 930,
+        "paper": 1336,
+        "plastic": 1597,
+        "shoes": 1449,
+        "trash": 453
+      },
+      "contains_personal_data": false,
+      "license_note": "Consulter et respecter la licence affichée sur Kaggle."
+    },
+    {
+      "id": "realwaste",
+      "name": "RealWaste",
+      "provider": "GitHub - dataset scientifique",
+      "url": "https://github.com/sam-single/realwaste",
+      "role": "external_evaluation_only",
+      "local_directory": "C:\\Users\\bouss\\eco-tri-ia\\data\\raw\\realwaste",
+      "data_directory_used": "C:\\Users\\bouss\\eco-tri-ia\\data\\raw\\realwaste",
+      "exists": true,
+      "status": "ok",
+      "raw_image_count_found": 4752,
+      "expected_image_count_for_project": 3587,
+      "class_counts_found": {
+        "Cardboard": 461,
+        "Food Organics": 411,
+        "Glass": 420,
+        "Metal": 790,
+        "Miscellaneous Trash": 495,
+        "Paper": 500,
+        "Plastic": 921,
+        "Textile Trash": 318,
+        "Vegetation": 436
+      },
+      "contains_personal_data": false,
+      "license_note": "CC BY-NC-SA 4.0 : attribution obligatoire, usage non commercial."
+    }
+  ]
+}

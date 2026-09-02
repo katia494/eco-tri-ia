@@ -1,0 +1,78 @@
+{
+  "sources": [
+    {
+      "id": "garbage_classification_v1",
+      "name": "Garbage Classification",
+      "provider": "Kaggle",
+      "url": "https://www.kaggle.com/datasets/asdasdasasdas/garbage-classification",
+      "download_method": "kagglehub",
+      "dataset_handle": "asdasdasasdas/garbage-classification",
+      "role": "training_historical_v2",
+      "local_directory": "data/raw/Garbage classification",
+      "expected_classes": [
+        "cardboard",
+        "glass",
+        "metal",
+        "paper",
+        "plastic",
+        "trash"
+      ],
+      "expected_image_count": 2527,
+      "license_note": "Consulter et respecter la licence affichée sur Kaggle.",
+      "contains_personal_data": false
+    },
+    {
+      "id": "garbage_classification_v2",
+      "name": "Garbage Classification V2",
+      "provider": "Kaggle",
+      "url": "https://www.kaggle.com/datasets/sumn2u/garbage-classification-v2",
+      "download_method": "kagglehub",
+      "dataset_handle": "sumn2u/garbage-classification-v2",
+      "role": "training_extension_v3",
+      "local_directory": "data/raw/garbage_dataset_v2",
+      "source_subdirectory_used": "original",
+      "expected_classes": [
+        "cardboard",
+        "glass",
+        "metal",
+        "paper",
+        "plastic",
+        "trash"
+      ],
+      "expected_image_count_for_project": 7463,
+      "excluded_classes": [
+        "battery",
+        "biological",
+        "clothes",
+        "shoes"
+      ],
+      "license_note": "Consulter et respecter la licence affichée sur Kaggle.",
+      "contains_personal_data": false
+    },
+    {
+      "id": "realwaste",
+      "name": "RealWaste",
+      "provider": "GitHub - dataset scientifique",
+      "url": "https://github.com/sam-single/realwaste",
+      "download_method": "github_archive",
+      "role": "external_evaluation_only",
+      "local_directory": "data/raw/realwaste",
+      "expected_classes_for_project": [
+        "cardboard",
+        "glass",
+        "metal",
+        "paper",
+        "plastic",
+        "trash"
+      ],
+      "expected_image_count_for_project": 3587,
+      "excluded_classes": [
+        "Food Organics",
+        "Textile Trash",
+        "Vegetation"
+      ],
+      "license_note": "CC BY-NC-SA 4.0 : attribution obligatoire, usage non commercial.",
+      "contains_personal_data": false
+    }
+  ]
+}

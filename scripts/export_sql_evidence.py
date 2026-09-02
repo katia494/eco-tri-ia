@@ -47,7 +47,7 @@ def export_query(
     rows = cursor.fetchall()
     destination.parent.mkdir(parents=True, exist_ok=True)
     with destination.open("w", newline="", encoding="utf-8") as csv_file:
-        writer = csv.writer(csv_file)
+        writer = csv.writer(csv_file, lineterminator="\n")
         writer.writerow(column[0] for column in cursor.description)
         writer.writerows(rows)
     return len(rows)

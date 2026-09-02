@@ -1,0 +1,49 @@
+{
+  "import": "c4_multisource_catalog",
+  "generated_at": "2026-09-01T12:23:29.562659+00:00",
+  "database": "data\\eco_tri_c4_preview.db",
+  "sources": [
+    {
+      "id": "garbage_classification_v1",
+      "role": "training_historical_v2",
+      "class_root": "data\\raw\\Garbage classification\\Garbage classification",
+      "discovered": 2527,
+      "excluded_by_quality_rules": 3,
+      "candidates": 2524,
+      "canonical_images_added": 2524,
+      "duplicate_occurrences": 0,
+      "provenance_links_added": 2524
+    },
+    {
+      "id": "garbage_classification_v2",
+      "role": "training_extension_v3",
+      "class_root": "data\\raw\\garbage_dataset_v2\\original",
+      "discovered": 7463,
+      "excluded_by_quality_rules": 2,
+      "candidates": 7461,
+      "canonical_images_added": 5245,
+      "duplicate_occurrences": 2216,
+      "provenance_links_added": 7461
+    },
+    {
+      "id": "realwaste",
+      "role": "external_evaluation_only",
+      "imported_to_training_catalog": false,
+      "reason": "Jeu réservé à l'évaluation externe."
+    }
+  ],
+  "total_candidates": 9985,
+  "canonical_images": 7769,
+  "provenance_links": 9985,
+  "duplicate_occurrences": 2216,
+  "statistics_by_category": {
+    "cardboard": 1427,
+    "glass": 1876,
+    "metal": 940,
+    "paper": 1361,
+    "plastic": 1626,
+    "trash": 539
+  },
+  "foreign_key_errors": 0,
+  "status": "ok"
+}
