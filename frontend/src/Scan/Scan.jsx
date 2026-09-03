@@ -44,12 +44,10 @@ function Sidebar() {
     const { darkMode } = useTheme();
 
     const navItems = [
-        { to: '/scan', icon: <ScanLine className="w-5 h-5" />, label: 'Scanner (Live)' },
-        { to: '/dashboard', icon: <LayoutDashboard className="w-5 h-5" />, label: 'Tableau de bord' },
-        { to: '/classement', icon: <Trophy className="w-5 h-5" />, label: 'Classement' },
-        { to: '/pratiques', icon: <BookOpen className="w-5 h-5" />, label: 'Bonnes Pratiques' },
-        { to: '/chatbot', icon: <MessageCircle className="w-5 h-5" />, label: 'Éco-Assistant IA' },
-    ];
+    { to: '/scan', icon: <ScanLine className="w-5 h-5" />, label: 'Scanner (Live)' },
+    { to: '/pratiques', icon: <BookOpen className="w-5 h-5" />, label: 'Bonnes pratiques' },
+    { to: '/chatbot', icon: <MessageCircle className="w-5 h-5" />, label: 'Guide interactif de tri' },
+];
 
     const asideBg = darkMode ? 'bg-gray-900 border-gray-700' : 'bg-white border-gray-200';
     const titleCl = darkMode ? 'text-gray-100' : 'text-gray-800';
@@ -109,7 +107,7 @@ function Sidebar() {
                             Katia
                         </p>
                         <p className={`text-xs ${profSub} truncate`}>
-                            Profil &amp; Réglages
+                            Mode démo locale
                         </p>
                     </div>
 

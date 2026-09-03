@@ -14,13 +14,11 @@ function Sidebar() {
     const { pathname } = useLocation();
     const { darkMode } = useTheme();
 
-    const navItems = [
-        { to: '/scan', icon: <ScanLine className="w-5 h-5" />, label: 'Scanner (Live)' },
-        { to: '/dashboard', icon: <LayoutDashboard className="w-5 h-5" />, label: 'Tableau de bord' },
-        { to: '/classement', icon: <Trophy className="w-5 h-5" />, label: 'Classement' },
-        { to: '/pratiques', icon: <BookOpen className="w-5 h-5" />, label: 'Bonnes Pratiques' },
-        { to: '/chatbot', icon: <MessageCircle className="w-5 h-5" />, label: 'Éco-Assistant IA' },
-    ];
+   const navItems = [
+    { to: '/scan', icon: <ScanLine className="w-5 h-5" />, label: 'Scanner (Live)' },
+    { to: '/pratiques', icon: <BookOpen className="w-5 h-5" />, label: 'Bonnes pratiques' },
+    { to: '/chatbot', icon: <MessageCircle className="w-5 h-5" />, label: 'Guide interactif de tri' },
+          ];
 
     const asideBg = darkMode ? 'bg-gray-900 border-gray-700' : 'bg-white border-gray-200';
     const titleCl = darkMode ? 'text-gray-100' : 'text-gray-800';
@@ -58,8 +56,8 @@ function Sidebar() {
                 <Link to="/profil" className={`flex items-center space-x-3 px-4 py-3 ${profBg} rounded-xl border mt-2 cursor-pointer transition`}>
                     <div className="w-10 h-10 bg-ecoBrown rounded-full flex items-center justify-center text-white font-bold">A</div>
                     <div className="flex-1 min-w-0">
-                        <p className={`text-sm font-medium ${profName} truncate italic text-gray-400`}>A rec. BDD/API</p>
-                        <p className={`text-xs ${profSub} truncate`}>Profil &amp; Réglages</p>
+                        <p className={`text-sm font-medium ${profName} truncate`}>Katia</p>
+                        <p className={`text-xs ${profSub} truncate`}>Mode démo locale</p>
                     </div>
                     <Settings className="w-4 h-4 text-gray-400" />
                 </Link>

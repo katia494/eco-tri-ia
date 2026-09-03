@@ -49,11 +49,9 @@ function Sidebar() {
     const { darkMode } = useTheme();
 
     const navItems = [
-        { to: '/scan', icon: <ScanLine className="w-5 h-5" />, label: 'Scanner (Live)' },
-        { to: '/dashboard', icon: <LayoutDashboard className="w-5 h-5" />, label: 'Tableau de bord' },
-        { to: '/classement', icon: <Trophy className="w-5 h-5" />, label: 'Classement' },
-        { to: '/pratiques', icon: <BookOpen className="w-5 h-5" />, label: 'Bonnes Pratiques' },
-        { to: '/chatbot', icon: <MessageCircle className="w-5 h-5" />, label: 'Éco-Assistant IA' },
+    { to: '/scan', icon: <ScanLine className="w-5 h-5" />, label: 'Scanner (Live)' },
+    { to: '/pratiques', icon: <BookOpen className="w-5 h-5" />, label: 'Bonnes pratiques' },
+    { to: '/chatbot', icon: <MessageCircle className="w-5 h-5" />, label: 'Guide interactif de tri' },
     ];
 
     const asideBg = darkMode ? 'bg-gray-900 border-gray-700' : 'bg-white border-gray-200';
@@ -92,8 +90,8 @@ function Sidebar() {
                 <Link to="/profil" className={`flex items-center space-x-3 px-4 py-3 ${profBg} rounded-xl border mt-2 cursor-pointer transition`}>
                     <div className="w-10 h-10 bg-ecoBrown rounded-full flex items-center justify-center text-white font-bold">A</div>
                     <div className="flex-1 min-w-0">
-                        <p className={`text-sm font-medium ${profName} truncate italic text-gray-400`}>A rec. BDD/API</p>
-                        <p className={`text-xs ${profSub} truncate`}>Profil &amp; Réglages</p>
+                        <p className={`text-sm font-medium ${profName} truncate italic text-gray-400`}>katia</p>
+                        <p className={`text-xs ${profSub} truncate`}>Mode démo locale</p>
                     </div>
                     <Settings className="w-4 h-4 text-gray-400" />
                 </Link>
@@ -156,7 +154,7 @@ function MessageBubble({ msg, darkMode }) {
 /* ===================== Page ChatBot ===================== */
 const WELCOME = {
     role: 'ai',
-    text: "Bonjour ! Je suis **Éco-Assistant**, votre guide pour un recyclage parfait. 🌱\n\nPosez-moi vos questions sur le tri des déchets, les matières recyclables, ou les points de collecte près de chez vous !",
+    text: "Bonjour ! Voici le guide interactif de tri. 🌱\n\nChoisissez une question proposée ci-dessous pour obtenir une réponse vérifiée.",
     id: 0,
 };
 
@@ -213,12 +211,6 @@ export default function ChatBot() {
         }, delay);
     };
 
-    const handleKey = (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            sendMessage();
-        }
-    };
 
     const clearChat = () => {
         setMessages([WELCOME]);
@@ -232,7 +224,6 @@ export default function ChatBot() {
     const subTxt = darkMode ? 'text-gray-400' : 'text-gray-500';
     const chatBg = darkMode ? 'bg-gray-950' : 'bg-gray-50';
     const inputBg = darkMode ? 'bg-gray-900 border-gray-700' : 'bg-white border-gray-200';
-    const fieldBg = darkMode ? 'bg-gray-800 border-gray-600 text-gray-100 placeholder-gray-500' : 'bg-gray-50 border-gray-200 text-gray-800 placeholder-gray-400';
     const suggBg = darkMode ? 'bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700 hover:border-ecoGreen hover:text-ecoGreen' : 'bg-white border-gray-200 text-gray-600 hover:border-ecoGreen hover:text-ecoGreen hover:bg-green-50';
 
     return (
@@ -249,13 +240,13 @@ export default function ChatBot() {
                         </div>
                         <div>
                             <h2 className={`text-lg font-bold ${headTxt} flex items-center gap-2`}>
-                                Éco-Assistant IA
+                                Guide interactif de tri
                                 <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-green-100 text-ecoGreen text-xs font-bold rounded-full">
                                     <span className="w-1.5 h-1.5 bg-ecoGreen rounded-full animate-pulse" />
                                     En ligne
                                 </span>
                             </h2>
-                            <p className={`text-xs ${subTxt}`}>Posez vos questions sur le tri et le recyclage</p>
+                            <p className={`text-xs ${subTxt}`}>Choisissez une question proposée pour une réponse vérifiée</p>
                         </div>
                     </div>
                     <button
@@ -313,28 +304,12 @@ export default function ChatBot() {
                 </div>
 
                 {/* Zone de saisie */}
-                <div className={`${inputBg} px-6 py-4 border-t flex items-end gap-3 flex-shrink-0 transition-colors duration-300`}>
-                    <textarea
-                        ref={inputRef}
-                        value={input}
-                        onChange={e => setInput(e.target.value)}
-                        onKeyDown={handleKey}
-                        placeholder="Posez votre question sur le recyclage… (Entrée pour envoyer)"
-                        rows={1}
-                        disabled={isTyping}
-                        className={`flex-1 resize-none rounded-xl border px-4 py-3 text-sm outline-none transition
-                            focus:ring-2 focus:ring-ecoGreen focus:border-ecoGreen ${fieldBg}
-                            max-h-32 disabled:opacity-50`}
-                        style={{ overflowY: input.split('\n').length > 3 ? 'auto' : 'hidden' }}
-                    />
-                    <button
-                        onClick={() => sendMessage()}
-                        disabled={!input.trim() || isTyping}
-                        className="w-11 h-11 bg-ecoGreen text-white rounded-xl flex items-center justify-center shadow-sm
-                            hover:bg-green-700 transition disabled:opacity-40 disabled:cursor-not-allowed flex-shrink-0">
-                        <Send className="w-4 h-4" />
-                    </button>
-                </div>
+               {/* Questions libres désactivées : seules les réponses vérifiées sont proposées. */}
+    <div className={`${inputBg} px-6 py-4 border-t flex-shrink-0 transition-colors duration-300`}>
+      <p className={`text-sm ${subTxt} text-center`}>
+        Choisissez une question proposée ci-dessus pour obtenir une réponse vérifiée.
+       </p>
+    </div>
 
             </div>
         </div>
