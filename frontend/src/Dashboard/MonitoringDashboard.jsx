@@ -83,15 +83,16 @@ export default function MonitoringDashboard() {
     loadMonitoring()
   }, [loadMonitoring])
 
-  const metrics = data?.metrics ?? data ?? {}
+  const application = data?.application ?? data?.metrics?.application ?? data?.metrics ?? {}
+  const model = data?.model ?? data?.metrics?.model ?? {}
   const alerts = Array.isArray(data?.alerts) ? data.alerts : []
   const status = String(data?.monitoring_status ?? data?.status ?? 'ok').toLowerCase()
   const isAlert = status === 'alert' || alerts.length > 0
 
-  const requests = metricValue(metrics, ['request_count', 'total_requests', 'requests', 'total'])
-  const errors = metricValue(metrics, ['error_rate', 'error_rate_percent', 'failure_rate', 'errors_rate'])
-  const latency = metricValue(metrics, ['average_latency_ms', 'avg_latency_ms', 'average_duration_ms', 'avg_duration_ms'])
-  const uncertainty = metricValue(metrics, ['uncertainty_rate', 'uncertain_rate', 'uncertain_predictions_rate', 'low_confidence_rate'])
+  const requests = metricValue(application, ['request_count', 'total_requests', 'requests', 'total'])
+  const errors = metricValue(application, ['error_rate', 'error_rate_percent', 'failure_rate', 'errors_rate'])
+  const latency = metricValue(application, ['average_latency_ms', 'avg_latency_ms', 'average_duration_ms', 'avg_duration_ms'])
+  const uncertainty = metricValue(model, ['uncertain_prediction_rate', 'uncertainty_rate', 'uncertain_rate', 'uncertain_predictions_rate', 'low_confidence_rate'])
 
   return (
     <main className="min-h-screen bg-slate-50 font-sans text-gray-800">
