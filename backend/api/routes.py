@@ -26,7 +26,11 @@ from backend.api.security import require_data_api_key
 router = APIRouter()
 
 
-@router.post("/predict", response_model=PredictResponse)
+@router.post(
+    "/predict",
+    response_model=PredictResponse,
+    dependencies=[Depends(require_data_api_key)],
+)
 async def predict(
     file: UploadFile = File(...),
     db: Session = Depends(get_db),

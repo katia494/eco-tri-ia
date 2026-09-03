@@ -1,4 +1,3 @@
-from typing import Annotated
 
 from fastapi import Header, HTTPException, status
 
@@ -6,7 +5,7 @@ from .config import settings
 
 
 def require_data_api_key(
-    x_api_key: Annotated[str | None, Header()] = None,
+    x_api_key: str | None = Header(default=None),
 ) -> None:
     """Autorise l'accès uniquement avec la clé envoyée dans x-api-key."""
     expected_key = settings.data_api_key
