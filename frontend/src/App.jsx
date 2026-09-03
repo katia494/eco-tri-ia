@@ -6,6 +6,7 @@ import PasseOublie from './Connexion_inscription/Passe_Oublie'
 import Scan from './Scan/Scan'
 import BonnesPratiques from './Bonnes P/Bonnes_Pratiques'
 import ChatBot from './ChatBot/chatbot'
+import MonitoringDashboard from './Dashboard/MonitoringDashboard'
 
 function App() {
   return (
@@ -20,9 +21,9 @@ function App() {
           <Route path="/scan" element={<Scan />} />
           <Route path="/pratiques" element={<BonnesPratiques />} />
           <Route path="/chatbot" element={<ChatBot />} />
+          <Route path="/dashboard" element={<MonitoringDashboard />} />
 
           <Route path="/profil" element={<Navigate to="/scan" replace />} />
-          <Route path="/dashboard" element={<Navigate to="/scan" replace />} />
           <Route path="/classement" element={<Navigate to="/scan" replace />} />
         </Routes>
       </BrowserRouter>
