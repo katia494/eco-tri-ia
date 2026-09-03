@@ -4,11 +4,8 @@ import Connexion from './Connexion_inscription/Connexion'
 import Inscription from './Connexion_inscription/Inscription'
 import PasseOublie from './Connexion_inscription/Passe_Oublie'
 import Scan from './Scan/Scan'
-import Profil from './Profil/Profil'
 import BonnesPratiques from './Bonnes P/Bonnes_Pratiques'
 import ChatBot from './ChatBot/chatbot'
-import Dashboard from './Dashboard/Dashboard'
-import LeGame from './Classement/Le game'
 
 function App() {
   return (
@@ -18,13 +15,15 @@ function App() {
           <Route path="/" element={<Navigate to="/scan" replace />} />
           <Route path="/connexion" element={<Connexion />} />
           <Route path="/inscription" element={<Inscription />} />
-          <Route path="/passe-oublie" element={<PasseOublie />} />
+          <Route path="/passe_oublie" element={<PasseOublie />} />
+
           <Route path="/scan" element={<Scan />} />
-          <Route path="/profil" element={<Profil />} />
           <Route path="/pratiques" element={<BonnesPratiques />} />
           <Route path="/chatbot" element={<ChatBot />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/classement" element={<LeGame />} />
+
+          <Route path="/profil" element={<Navigate to="/scan" replace />} />
+          <Route path="/dashboard" element={<Navigate to="/scan" replace />} />
+          <Route path="/classement" element={<Navigate to="/scan" replace />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
