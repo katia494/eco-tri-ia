@@ -31,6 +31,8 @@ En tant qu'utilisateur, je veux voir le niveau de confiance et une consigne afin
 - La confiance est comprise entre 0 et 1.
 - Une confiance faible est présentée comme une incertitude et non comme une certitude.
 - Le texte reste lisible sur mobile et utilisable au clavier.
+- L'interface vise le niveau **WCAG 2.1 AA** : contraste lisible, navigation clavier et messages d'erreur compréhensibles.
+- La vérification inclut un parcours au clavier : choisir une image, lancer l'analyse et lire le résultat sans souris.
 
 ### US3 - Consulter l'historique
 

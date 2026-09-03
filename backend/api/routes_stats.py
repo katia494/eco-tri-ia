@@ -68,9 +68,38 @@ def get_monitoring(db: Session = Depends(get_db)):
     uncertain_rate = (
         uncertain_predictions / total_predictions if total_predictions else 0.0
     )
+    application_metrics = monitoring_registry.snapshot()
+    alert_thresholds = {
+        "error_rate": 0.05,
+        "latency_ms": 2000,
+        "uncertain_prediction_rate": 0.20,
+    }
+    alerts = []
 
+    if application_metrics["error_rate"] >= alert_thresholds["error_rate"]:
+        alerts.append({
+            "level": "warning",
+            "metric": "error_rate",
+            "message": "Taux d'erreur supérieur ou égal à 5 %.",
+        })
+
+    if application_metrics["average_latency_ms"] >= alert_thresholds["latency_ms"]:
+        alerts.append({
+            "level": "warning",
+            "metric": "average_latency_ms",
+            "message": "Latence moyenne supérieure ou égale à 2 000 ms.",
+        })
+
+    if uncertain_rate >= alert_thresholds["uncertain_prediction_rate"]:
+        alerts.append({
+            "level": "warning",
+            "metric": "uncertain_prediction_rate",
+            "message": "Taux de prédictions incertaines supérieur ou égal à 20 %.",
+        })
     return {
-        "application": monitoring_registry.snapshot(),
+        "monitoring_status": "alert" if alerts else "ok",
+        "alerts": alerts,
+        "application": application_metrics,
         "model": {
             "version": settings.model_version,
             "confidence_threshold": settings.confidence_threshold,

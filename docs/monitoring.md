@@ -27,7 +27,19 @@ requêtes, taux d'erreur, latence moyenne/maximale, statuts HTTP, endpoints
 appelés, nombre de prédictions incertaines et seuils d'alerte. Les compteurs
 applicatifs sont réinitialisés au redémarrage ; SQLite conserve les métadonnées
 de prédiction.
+### Alertes calculées par l'API
 
+La route `/stats/monitoring` calcule un statut `ok` ou `alert` à chaque appel.
+Une alerte est retournée avec la métrique concernée et un message explicite lorsque :
+
+- le taux d'erreur est supérieur ou égal à 5 % ;
+- la latence moyenne de l'application est supérieure ou égale à 2 000 ms ;
+- le taux de prédictions incertaines est supérieur ou égal à 20 %.
+
+Ces alertes sont visibles dans le champ `alerts` de la réponse JSON. Elles sont
+testées automatiquement avec une latence simulée de 2 500 ms. Dans ce MVP local,
+elles constituent une alerte applicative consultable ; elles n'envoient pas encore
+de notification e-mail ou SMS.
 ## Procédure
 
 1. Appeler `/health` régulièrement.
